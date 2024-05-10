@@ -1,4 +1,4 @@
-package com.br.empresa.api.empresa;
+package com.br.empresa.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
