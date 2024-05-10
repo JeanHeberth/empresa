@@ -21,8 +21,6 @@ public class FuncionarioResponseDto {
 
     private String email;
 
-    private String senha;
-
     private String telefone;
 
     private LocalDate dataNascimento;
@@ -32,5 +30,15 @@ public class FuncionarioResponseDto {
     private Double salario;
 
     public FuncionarioResponseDto(Funcionario funcionario) {
+        this.id = funcionario.getId();
+        this.nome = funcionario.getNome();
+        this.cpf = funcionario.getCpf();
+        this.email = funcionario.getEmail();
+        this.telefone = funcionario.getTelefone();
+        this.dataNascimento = funcionario.getDataNascimento();
+        this.sexo = funcionario.getSexo();
+        this.salario = funcionario.getSalario();
     }
+
+
 }
