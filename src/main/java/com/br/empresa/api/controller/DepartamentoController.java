@@ -33,7 +33,7 @@ public class DepartamentoController {
 
     @DeleteMapping("/{id}")
     public void apagarFuncionario(@PathVariable Long id) {
-        departamentoService.apagarFuncionario(id);
+        departamentoService.apagarDepartamento(id);
     }
 
     @PostMapping()
