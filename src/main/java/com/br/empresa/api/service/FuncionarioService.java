@@ -41,7 +41,7 @@ public class FuncionarioService {
         if (optionalFuncionario.isPresent()) {
             funcionarioRepository.deleteById(id);
         } else {
-            throw new RuntimeException("Usuário não encontrado com o id: " + id);
+            throw new RuntimeException("Usuário não encontrado com o id:" + id);
         }
     }
 
