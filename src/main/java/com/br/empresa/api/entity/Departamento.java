@@ -24,4 +24,6 @@ public class Departamento extends GenericDomain {
         this.setNome(numero);
         this.setId((long) id);
     }
+
+
 }

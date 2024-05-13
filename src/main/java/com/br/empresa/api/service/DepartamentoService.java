@@ -30,9 +30,12 @@ public class DepartamentoService {
     }
 
     public DepartamentoResponseDto buscarDepartamentoPorId(Long id) {
-        Departamento departamentoExistente = departamentoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Departamento não encontrado"));
-        return new DepartamentoResponseDto(departamentoExistente);
+        Optional<Departamento> departamento = departamentoRepository.findById(id);
+        DepartamentoResponseDto departamentoResponseVo = new DepartamentoResponseDto(departamento.get());
+        if (departamento.isPresent()) {
+            return departamentoResponseVo;
+        }
+        throw new RuntimeException();
     }
 
 
@@ -46,7 +49,7 @@ public class DepartamentoService {
         return new DepartamentoResponseDto(departamentoSalvo);
     }
 
-    public void apagarFuncionario(Long id) {
+    public void apagarDepartamento(Long id) {
         Optional<Departamento> optionalFuncionario = departamentoRepository.findById(id);
         if (optionalFuncionario.isPresent()) {
             departamentoRepository.deleteById(id);
@@ -61,8 +64,8 @@ public class DepartamentoService {
                 .orElseThrow(() -> new RuntimeException("Departamento não encontrado"));
 
         departamentoExistente.setId(departamentoExistente.getId());
-        departamentoExistente.setNome(dto.getNome());
-        departamentoExistente.setNumero(dto.getNumero());
+        departamentoExistente.setNome(departamentoExistente.getNome());
+        departamentoExistente.setNumero(departamentoExistente.getNumero());
 
         DepartamentoResponseDto departamentoAtualizado = new DepartamentoResponseDto(departamentoRepository.save(departamentoExistente));
         return departamentoAtualizado;

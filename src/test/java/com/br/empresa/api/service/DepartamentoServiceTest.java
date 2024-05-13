@@ -1,5 +1,6 @@
 package com.br.empresa.api.service;
 
+import com.br.empresa.api.dto.DepartamentoRequestDto;
 import com.br.empresa.api.dto.DepartamentoResponseDto;
 import com.br.empresa.api.entity.Departamento;
 import com.br.empresa.api.repository.DepartamentoRepository;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -44,23 +46,86 @@ public class DepartamentoServiceTest {
 
     @Test
     public void testBuscarDepartamentoPorIdNaoEncontrado() {
-        // Preparar dados
-//        int departamentoId = 2;
-//        when(departamentoRepository.findById((long)departamentoId)).thenReturn(Optional.empty());
-//
-//        // Executar
-//        DepartamentoResponseDto resultado = departamentoService.buscarDepartamentoPorId((long)departamentoId);
-//
-//
-//        // teste
-//        assertNull(departamentoId);
-//        assertEquals(departamentoId, resultado.getId());
-//        assertEquals("TI", resultado.getNome());
-//
-//
-//        // Verifica chamadas aos mocks
-//        verify(departamentoRepository, times(1)).findById((long)departamentoId);
+
+        // Entrada
+        Long departamentoId = 1L;
+
+        // Acao
+        Mockito.when(departamentoRepository.findById(departamentoId)).thenReturn(Optional.empty());
+
+        // Rsultado
+        assertThrows(RuntimeException.class, () -> departamentoService.buscarDepartamentoPorId(departamentoId));
     }
 
+    @Test
+    public void testCadastrarDepartamento() {
+        // Dados de entrada
+        DepartamentoRequestDto requestDto = new DepartamentoRequestDto();
+        requestDto.setNome("TI");
+        requestDto.setNumero("123");
+
+        Departamento departamento = Departamento.builder()
+                .nome(requestDto.getNome())
+                .numero(requestDto.getNumero())
+                .build();
+
+        Departamento departamentoSalvo = new Departamento();
+        departamentoSalvo.setId(departamentoSalvo.getId());
+        departamentoSalvo.setNome(departamentoSalvo.getNome());
+        departamentoSalvo.setNumero(departamentoSalvo.getNumero());
+
+        when(departamentoRepository.save(any(Departamento.class))).thenReturn(departamentoSalvo);
+
+        // Execução
+        DepartamentoResponseDto resultado = departamentoService.cadastrarDepartamento(requestDto);
+
+        // Verificações
+        assertNotNull(resultado);
+        assertEquals(departamentoSalvo.getId(), resultado.getId());
+        assertEquals(departamentoSalvo.getNome(), resultado.getNome());
+        assertEquals(departamentoSalvo.getNumero(), resultado.getNumero());
+
+        // Verifica se o método save foi chamado
+        verify(departamentoRepository, times(1)).save(any(Departamento.class));
+    }
+
+    @Test
+    public void testApagarDepartamento() {
+        // Mock data
+        Long departamentoId = 1L;
+        Departamento departamento = new Departamento(1, "TI");
+
+        // Mock repository
+        Mockito.when(departamentoRepository.findById(departamentoId)).thenReturn(Optional.of(departamento));
+
+        // Call the method
+        departamentoService.apagarDepartamento(departamentoId);
+
+        // Verify that deleteById is called with the correct ID
+        Mockito.verify(departamentoRepository, Mockito.times(1)).deleteById(departamentoId);
+    }
+
+    @Test
+    public void testAtualizarDepartamento() {
+        // Mock data
+        Long departamentoId = 1L;
+        DepartamentoRequestDto requestDto = new DepartamentoRequestDto("Financeiro", 2);
+        Departamento departamento = new Departamento(1, "TI");
+        departamento.setId(departamentoId);
+
+        // Mock repository
+        Mockito.when(departamentoRepository.findById(departamentoId)).thenReturn(Optional.of(departamento));
+        Mockito.when(departamentoRepository.save(departamento)).thenReturn(departamento);
+
+        // Call the method
+        DepartamentoResponseDto result = departamentoService.atualizarDepartamento(departamentoId, requestDto);
+
+        // Verify the result
+        assertEquals(departamentoId, result.getId());
+        assertEquals("TI", result.getNome());
+        assertEquals(2, result.getNumero());
+    }
 }
+
+
 

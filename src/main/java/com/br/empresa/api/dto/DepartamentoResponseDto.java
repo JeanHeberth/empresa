@@ -22,8 +22,8 @@ public class DepartamentoResponseDto {
         this.numero = departamento.getNumero();
     }
 
-    public DepartamentoResponseDto(String numero) {
-        this.setNumero(numero);
-    }
+//    public DepartamentoResponseDto(String numero) {
+//        this.setNumero(numero);
+//    }
 
 }
