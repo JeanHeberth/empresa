@@ -42,7 +42,7 @@ public class DepartamentoService {
     public DepartamentoResponseDto cadastrarDepartamento(DepartamentoRequestDto dto) {
         Departamento departamento = Departamento.builder()
                 .nome(dto.getNome())
-                .numero(dto.getNumero())
+                .numero(String.valueOf(dto.getNumero()))
                 .build();
 
         Departamento departamentoSalvo = departamentoRepository.save(departamento);
@@ -53,7 +53,7 @@ public class DepartamentoService {
         return departamentoRepository.findById(dto.getId())
                 .map(departamento -> {
                     departamento.setNome(dto.getNome());
-                    departamento.setNumero(dto.getNumero());
+                    departamento.setNumero(String.valueOf(dto.getNumero()));
                     return new DepartamentoResponseDto(departamentoRepository.save(departamento));
                 })
                 .orElseThrow(() -> new EntityNotFoundException("Departamento não encontrado com o id: " + dto.getId()));
