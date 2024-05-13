@@ -3,8 +3,6 @@ package com.br.empresa.api.controller;
 
 import com.br.empresa.api.dto.DepartamentoRequestDto;
 import com.br.empresa.api.dto.DepartamentoResponseDto;
-import com.br.empresa.api.dto.FuncionarioRequestDto;
-import com.br.empresa.api.dto.FuncionarioResponseDto;
 import com.br.empresa.api.service.DepartamentoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

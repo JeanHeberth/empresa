@@ -4,6 +4,7 @@ import com.br.empresa.api.dto.DepartamentoRequestDto;
 import com.br.empresa.api.dto.DepartamentoResponseDto;
 import com.br.empresa.api.entity.Departamento;
 import com.br.empresa.api.repository.DepartamentoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -124,6 +125,24 @@ public class DepartamentoServiceTest {
         assertEquals(departamentoId, result.getId());
         assertEquals("Financeiro", result.getNome());
         assertEquals(2, result.getNumero());
+    }
+
+    @Test
+    public void testAtualizarDepartamentoFalha() {
+        // Dados de entrada
+        DepartamentoRequestDto requestDto = new DepartamentoRequestDto();
+        requestDto.setId(2L);
+
+        when(departamentoRepository.findById(requestDto.getId())).thenReturn(Optional.empty());
+
+        // Ação e Verificação
+        assertThrows(EntityNotFoundException.class, () -> {
+            departamentoService.atualizarDepartamento(requestDto);
+        });
+
+        // Verificação se findById foi chamado
+        verify(departamentoRepository).findById(requestDto.getId());
+        verify(departamentoRepository, never()).save(any(Departamento.class));
     }
 }
 
