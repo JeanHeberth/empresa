@@ -15,4 +15,9 @@ public class DepartamentoRequestDto {
 
     private Long numero;
 
+    public DepartamentoRequestDto(String nome, String numero) {
+    }
+
+    public DepartamentoRequestDto(Long id, String nome, String numero) {
+    }
 }

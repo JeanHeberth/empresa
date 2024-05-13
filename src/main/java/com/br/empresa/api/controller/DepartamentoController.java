@@ -30,12 +30,12 @@ public class DepartamentoController {
     }
 
     @DeleteMapping("/{id}")
-    public void apagarFuncionario(@PathVariable Long id) {
+    public void apagarDepartamento(@PathVariable Long id) {
         departamentoService.apagarDepartamento(id);
     }
 
     @PostMapping()
-    public ResponseEntity<DepartamentoResponseDto> cadastrarDepartamentoo(@RequestBody @Valid DepartamentoRequestDto dto) {
+    public ResponseEntity<DepartamentoResponseDto> cadastrarDepartamento(@RequestBody @Valid DepartamentoRequestDto dto) {
         return ResponseEntity.ok(departamentoService.cadastrarDepartamento(dto));
     }
 
@@ -44,4 +44,6 @@ public class DepartamentoController {
         DepartamentoResponseDto funcionarioAtualizado = departamentoService.atualizarDepartamento(dto);
         return ResponseEntity.ok(funcionarioAtualizado);
     }
+
+
 }
