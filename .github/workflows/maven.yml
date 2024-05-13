@@ -3,7 +3,7 @@ name: pipeline
 
 on:
   push:
-    branches: [ "developer" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 

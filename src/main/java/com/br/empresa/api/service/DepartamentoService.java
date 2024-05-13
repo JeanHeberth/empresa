@@ -4,6 +4,7 @@ package com.br.empresa.api.service;
 import com.br.empresa.api.dto.DepartamentoRequestDto;
 import com.br.empresa.api.dto.DepartamentoResponseDto;
 import com.br.empresa.api.entity.Departamento;
+import com.br.empresa.api.entity.Funcionario;
 import com.br.empresa.api.repository.DepartamentoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,6 @@ public class DepartamentoService {
         throw new RuntimeException();
     }
 
-
     public DepartamentoResponseDto cadastrarDepartamento(DepartamentoRequestDto dto) {
         Departamento departamento = Departamento.builder()
                 .nome(dto.getNome())
@@ -58,16 +58,17 @@ public class DepartamentoService {
         }
     }
 
+    public DepartamentoResponseDto atualizarDepartamento(DepartamentoRequestDto dto) {
 
-    public DepartamentoResponseDto atualizarDepartamento(Long id, DepartamentoRequestDto dto) {
-        Departamento departamentoExistente = departamentoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Departamento não encontrado"));
-
-        departamentoExistente.setId(departamentoExistente.getId());
-        departamentoExistente.setNome(departamentoExistente.getNome());
-        departamentoExistente.setNumero(departamentoExistente.getNumero());
-
-        DepartamentoResponseDto departamentoAtualizado = new DepartamentoResponseDto(departamentoRepository.save(departamentoExistente));
-        return departamentoAtualizado;
+        Optional<Departamento> buscaDepartamento = departamentoRepository.findById(dto.getId());
+        if (buscaDepartamento.isPresent()) {
+            Departamento departamento = buscaDepartamento.get();
+            departamento.setId(dto.getId());
+            departamento.setNome(dto.getNome());
+            departamento.setNumero(dto.getNumero());
+            DepartamentoResponseDto departamentoAtualizado = new DepartamentoResponseDto(departamentoRepository.save(departamento));
+            return departamentoAtualizado;
+        }
+        throw new RuntimeException("Departamento não encontrado com o id: " + dto.getId());
     }
 }

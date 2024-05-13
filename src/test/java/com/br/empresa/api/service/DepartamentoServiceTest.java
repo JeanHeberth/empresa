@@ -62,7 +62,7 @@ public class DepartamentoServiceTest {
         // Dados de entrada
         DepartamentoRequestDto requestDto = new DepartamentoRequestDto();
         requestDto.setNome("TI");
-        requestDto.setNumero("123");
+        requestDto.setNumero(123L);
 
         Departamento departamento = Departamento.builder()
                 .nome(requestDto.getNome())
@@ -109,7 +109,7 @@ public class DepartamentoServiceTest {
     public void testAtualizarDepartamento() {
         // Mock data
         Long departamentoId = 1L;
-        DepartamentoRequestDto requestDto = new DepartamentoRequestDto("Financeiro", 2);
+        DepartamentoRequestDto requestDto = new DepartamentoRequestDto(1L, "Financeiro", 2L);
         Departamento departamento = new Departamento(1, "TI");
         departamento.setId(departamentoId);
 
@@ -118,11 +118,11 @@ public class DepartamentoServiceTest {
         Mockito.when(departamentoRepository.save(departamento)).thenReturn(departamento);
 
         // Call the method
-        DepartamentoResponseDto result = departamentoService.atualizarDepartamento(departamentoId, requestDto);
+        DepartamentoResponseDto result = departamentoService.atualizarDepartamento(requestDto);
 
         // Verify the result
         assertEquals(departamentoId, result.getId());
-        assertEquals("TI", result.getNome());
+        assertEquals("Financeiro", result.getNome());
         assertEquals(2, result.getNumero());
     }
 }
