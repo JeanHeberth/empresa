@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class DepartamentoRequestDto {
 
@@ -13,10 +12,12 @@ public class DepartamentoRequestDto {
 
     private String nome;
 
-    private String numero;
+    private Long numero;
 
-    public DepartamentoRequestDto(String nome, int numero) {
+    public DepartamentoRequestDto(Long id, String nome, Long numero) {
+        this.setId(id);
         this.setNome(nome);
-        this.setNumero(String.valueOf(numero));
+        this.setNumero(numero);
     }
+
 }

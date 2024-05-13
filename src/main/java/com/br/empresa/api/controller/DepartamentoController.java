@@ -41,9 +41,9 @@ public class DepartamentoController {
         return ResponseEntity.ok(departamentoService.cadastrarDepartamento(dto));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<DepartamentoResponseDto> atualizarDepartamento(@PathVariable Long id, @RequestBody DepartamentoRequestDto dto) {
-        DepartamentoResponseDto funcionarioAtualizado = departamentoService.atualizarDepartamento(id, dto);
+    @PutMapping()
+    public ResponseEntity<DepartamentoResponseDto> atualizarDepartamento(@Valid @RequestBody DepartamentoRequestDto dto) {
+        DepartamentoResponseDto funcionarioAtualizado = departamentoService.atualizarDepartamento(dto);
         return ResponseEntity.ok(funcionarioAtualizado);
     }
 }
