@@ -1,8 +1,7 @@
 package com.br.empresa.api.dto;
 
-import lombok.AllArgsConstructor;
+import com.br.empresa.api.entity.Funcionario;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -27,4 +26,7 @@ public class FuncionarioRequestDto {
     private char sexo;
 
     private Double salario;
+
+    private Funcionario supervisor;
+
 }
