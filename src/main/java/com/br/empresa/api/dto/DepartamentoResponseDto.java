@@ -14,7 +14,7 @@ public class DepartamentoResponseDto {
 
     private String nome;
 
-    private Long numero;
+    private String numero;
 
     public DepartamentoResponseDto(Departamento departamento) {
         this.id = departamento.getId();

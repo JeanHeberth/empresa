@@ -18,12 +18,10 @@ public class Departamento extends GenericDomain {
     private String nome;
 
     @Column(nullable = false)
-    private Long numero;
+    private String numero;
 
-    public Departamento(int id, String numero) {
+    public Departamento(Long id, String numero) {
         this.setNome(numero);
-        this.setId((long) id);
+        this.setId(id);
     }
-
-
 }

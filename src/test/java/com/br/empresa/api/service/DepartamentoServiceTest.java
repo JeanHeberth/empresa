@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 public class DepartamentoServiceTest {
 
     @Mock
@@ -30,7 +32,7 @@ public class DepartamentoServiceTest {
     public void testBuscarDepartamentoPorIdEncontrado() {
 
         int departamentoId = 1;
-        Departamento departamento = new Departamento(departamentoId, "TI");
+        Departamento departamento = new Departamento(Long.valueOf(departamentoId), "TI");
         when(departamentoRepository.findById((long) departamentoId)).thenReturn(Optional.of(departamento));
 
         // Executar
@@ -67,7 +69,7 @@ public class DepartamentoServiceTest {
 
         Departamento departamento = Departamento.builder()
                 .nome(requestDto.getNome())
-                .numero(requestDto.getNumero())
+                .numero(String.valueOf(requestDto.getNumero()))
                 .build();
 
         Departamento departamentoSalvo = new Departamento();
@@ -94,7 +96,7 @@ public class DepartamentoServiceTest {
     public void testApagarDepartamento() {
         // Mock data
         Long departamentoId = 1L;
-        Departamento departamento = new Departamento(1, "TI");
+        Departamento departamento = new Departamento(Long.valueOf(1), "TI");
 
         // Mock repository
         Mockito.when(departamentoRepository.findById(departamentoId)).thenReturn(Optional.of(departamento));
@@ -111,7 +113,7 @@ public class DepartamentoServiceTest {
         // Mock data
         Long departamentoId = 1L;
         DepartamentoRequestDto requestDto = new DepartamentoRequestDto(1L, "Financeiro", 2L);
-        Departamento departamento = new Departamento(1, "TI");
+        Departamento departamento = new Departamento(Long.valueOf(1), "TI");
         departamento.setId(departamentoId);
 
         // Mock repository
@@ -124,7 +126,7 @@ public class DepartamentoServiceTest {
         // Verify the result
         assertEquals(departamentoId, result.getId());
         assertEquals("Financeiro", result.getNome());
-        assertEquals(2, result.getNumero());
+        assertEquals(2, Long.valueOf(result.getNumero()));
     }
 
     @Test
