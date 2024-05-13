@@ -36,15 +36,6 @@ public class FuncionarioService {
 
     }
 
-    public void apagarFuncionario(Long id) {
-        Optional<Funcionario> optionalFuncionario = funcionarioRepository.findById(id);
-        if (optionalFuncionario.isPresent()) {
-            funcionarioRepository.deleteById(id);
-        } else {
-            throw new RuntimeException("Usuário não encontrado com o id:" + id);
-        }
-    }
-
     public FuncionarioResponseDto cadastrarFuncionario(FuncionarioRequestDto dto) {
 
         Funcionario funcionario = Funcionario.builder()
@@ -91,6 +82,15 @@ public class FuncionarioService {
 
         FuncionarioResponseDto funcionarioAtualizado = new FuncionarioResponseDto(funcionarioRepository.save(funcionarioExistente));
         return funcionarioAtualizado;
+    }
+
+    public void apagarFuncionario(Long id) {
+        Optional<Funcionario> optionalFuncionario = funcionarioRepository.findById(id);
+        if (optionalFuncionario.isPresent()) {
+            funcionarioRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Usuário não encontrado com o id:" + id);
+        }
     }
 }
 
