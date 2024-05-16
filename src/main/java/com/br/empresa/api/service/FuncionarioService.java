@@ -6,6 +6,7 @@ import com.br.empresa.api.entity.Funcionario;
 import com.br.empresa.api.repository.FuncionarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public class FuncionarioService {
 
     @Autowired
     private FuncionarioRepository funcionarioRepository;
+
+    private BCryptPasswordEncoder enconder = new BCryptPasswordEncoder();
 
 
     private ModelMapper mapper = new ModelMapper();
@@ -91,6 +94,11 @@ public class FuncionarioService {
         } else {
             throw new RuntimeException("Usuário não encontrado com o id:" + id);
         }
+    }
+
+    public void criptografarSenha(FuncionarioRequestDto dto) {
+        // Criptografando a senha do usuário
+        dto.setSenha(enconder.encode(dto.getSenha()));
     }
 }
 

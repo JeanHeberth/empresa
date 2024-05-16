@@ -29,4 +29,6 @@ public class FuncionarioRequestDto {
 
     private Funcionario supervisor;
 
+    public FuncionarioRequestDto(String nome, String email, String numero) {
+    }
 }

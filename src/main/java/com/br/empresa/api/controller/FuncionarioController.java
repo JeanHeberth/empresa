@@ -6,7 +6,6 @@ import com.br.empresa.api.service.FuncionarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +17,9 @@ public class FuncionarioController {
     @Autowired
     FuncionarioService funcionarioService;
 
-    private BCryptPasswordEncoder enconder = new BCryptPasswordEncoder();
+    public FuncionarioController(FuncionarioService funcionarioService) {
+        this.funcionarioService = funcionarioService;
+    }
 
     @GetMapping()
     public ResponseEntity<List<FuncionarioResponseDto>> buscarTodosFuncionarios() {
@@ -37,7 +38,7 @@ public class FuncionarioController {
 
     @PostMapping()
     public ResponseEntity<FuncionarioResponseDto> cadastrarFuncionario(@RequestBody @Valid FuncionarioRequestDto dto) {
-        criptografarSenha(dto);
+        funcionarioService.criptografarSenha(dto);
         return ResponseEntity.ok(funcionarioService.cadastrarFuncionario(dto));
     }
 
@@ -59,10 +60,5 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarioAtualizado);
     }
 
-
-    private void criptografarSenha(FuncionarioRequestDto dto) {
-        // Criptografando a senha do usuário
-        dto.setSenha(enconder.encode(dto.getSenha()));
-    }
 
 }
