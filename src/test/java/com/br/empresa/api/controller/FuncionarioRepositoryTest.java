@@ -86,22 +86,22 @@ public class FuncionarioRepositoryTest {
         assertEquals(mockResponseDto, responseEntity.getBody());
     }
 
-//    @Test
-//    public void testAtualizarFuncionario() {
-//        // Mock data
-//        Long funcionarioId = 1L;
-//        FuncionarioRequestDto mockRequestDto = new FuncionarioRequestDto("Jane Smith", "janesmith@example.com", "newpassword");
-//        FuncionarioResponseDto mockResponseDto = new FuncionarioResponseDto(funcionarioId, "Jane Smith", "janesmith@example.com");
-//
-//        when(funcionarioService.atualizarFuncionario(funcionarioId, mockRequestDto)).thenReturn(mockResponseDto);
-//
-//        ResponseEntity<FuncionarioResponseDto> responseEntity = funcionarioController.atualizarFuncionario(funcionarioId, mockRequestDto);
-//
-//        assertNotNull(responseEntity);
-//        assertEquals(200, responseEntity.getStatusCodeValue());
-//        assertEquals(mockResponseDto, responseEntity.getBody());
-//
-//        verify(funcionarioService, times(1)).atualizarFuncionario(funcionarioId, mockRequestDto);
-//    }
+    @Test
+    public void testAtualizarFuncionario() {
+        // Mock data
+        Long funcionarioId = 1L;
+        FuncionarioRequestDto mockRequestDto = new FuncionarioRequestDto("Jane Smith", "janesmith@example.com", "newpassword");
+        FuncionarioResponseDto mockResponseDto = new FuncionarioResponseDto(funcionarioId, "Jane Smith", "janesmith@example.com");
+
+        when(funcionarioService.atualizarFuncionario(funcionarioId, mockRequestDto)).thenReturn(mockResponseDto);
+
+        ResponseEntity<FuncionarioResponseDto> responseEntity = funcionarioController.atualizarFuncionario(funcionarioId, mockRequestDto);
+
+        assertNotNull(responseEntity);
+        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals(mockResponseDto, responseEntity.getBody());
+
+        verify(funcionarioService, times(1)).atualizarFuncionario(funcionarioId, mockRequestDto);
+    }
 }
 
