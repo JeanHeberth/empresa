@@ -41,4 +41,6 @@ public class FuncionarioResponseDto {
     }
 
 
+    public FuncionarioResponseDto(long id, String nome, String mail) {
+    }
 }
