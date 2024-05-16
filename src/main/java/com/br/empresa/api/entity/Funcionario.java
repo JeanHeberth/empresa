@@ -40,6 +40,13 @@ public class Funcionario extends GenericDomain {
     @ManyToOne
     private Funcionario supervisor;
 
+    public Funcionario(String nome, String email, String telefone, String salario) {
+        this.nome = nome;
+        this.email = email;
+        this.telefone = telefone;
+        this.salario = Double.valueOf(salario);
+    }
+
     public static FuncionarioBuilder builder() {
         return new FuncionarioBuilder();
     }

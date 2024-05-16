@@ -32,7 +32,7 @@ public class FuncionarioService {
 
     }
 
-    public FuncionarioResponseDto buscarFuncionariosPorId(Long id) {
+    public FuncionarioResponseDto buscarFuncionarioPorId(Long id) {
         Funcionario funcionarioExistente = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
         return new FuncionarioResponseDto(funcionarioExistente);
