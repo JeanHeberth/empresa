@@ -21,6 +21,9 @@ public class Funcionario extends GenericDomain {
     @Column(nullable = false)
     private String cpf;
 
+    @Column(nullable = false)
+    private String endereco;
+
     @Column(nullable = false, unique = true)
     private String email;
 

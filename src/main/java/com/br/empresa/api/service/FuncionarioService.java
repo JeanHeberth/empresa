@@ -3,6 +3,7 @@ package com.br.empresa.api.service;
 import com.br.empresa.api.dto.FuncionarioRequestDto;
 import com.br.empresa.api.dto.FuncionarioResponseDto;
 import com.br.empresa.api.entity.Funcionario;
+import com.br.empresa.api.exception.EntityNotFoundException;
 import com.br.empresa.api.repository.FuncionarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ public class FuncionarioService {
 
     private BCryptPasswordEncoder enconder = new BCryptPasswordEncoder();
 
-
     private ModelMapper mapper = new ModelMapper();
+
 
     public List<FuncionarioResponseDto> buscarFuncionarios() {
         List<Funcionario> funcionarios = funcionarioRepository.findAll();
@@ -40,10 +41,16 @@ public class FuncionarioService {
     }
 
     public FuncionarioResponseDto cadastrarFuncionario(FuncionarioRequestDto dto) {
+        Optional<Funcionario> funcionarioOptionalEmail = funcionarioRepository.findByEmail(dto.getEmail());
+        Optional<Funcionario> funcionarioOptionalEndereco = funcionarioRepository.findByEndereco(dto.getEndereco());
+        if (funcionarioOptionalEmail.isPresent() || funcionarioOptionalEndereco.isPresent()) {
+            throw new EntityNotFoundException("Já existe um usuário com o email ou endereço cadastrado");
+        }
         Funcionario funcionario = Funcionario.builder()
                 .nome(dto.getNome())
                 .cpf(dto.getCpf())
                 .telefone(dto.getTelefone())
+                .endereco(dto.getEndereco())
                 .senha(dto.getSenha())
                 .email(dto.getEmail())
                 .dataNascimento(dto.getDataNascimento())
