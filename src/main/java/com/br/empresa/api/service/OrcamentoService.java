@@ -3,6 +3,7 @@ package com.br.empresa.api.service;
 import com.br.empresa.api.dto.OrcamentoRequestDto;
 import com.br.empresa.api.dto.OrcamentoResponseDto;
 import com.br.empresa.api.entity.Orcamento;
+import com.br.empresa.api.exception.EntityNotFoundException;
 import com.br.empresa.api.repository.OrcamentoRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +40,18 @@ public class OrcamentoService {
         } catch (Exception e) {
             logger.error("Erro ao buscar orçamentos ", e);
             throw new RuntimeException("Erro ao buscar orçamentos", e);
+        }
+    }
+
+    public OrcamentoResponseDto buscarOrcamentoPorId(Long id) {
+        logger.info("Buscando orçamento com ID: {}", id);
+        Optional<Orcamento> orcamentoOptional = orcamentoRepository.findById(id);
+        if (orcamentoOptional.isPresent()) {
+            Orcamento orcamento = orcamentoOptional.get();
+            return mapper.map(orcamento, OrcamentoResponseDto.class);
+        } else {
+            logger.info("Orçamento não encontrado para o ID: {}", id);
+            throw new EntityNotFoundException("Orçamento não encontrado para o ID: {}" + id);
         }
     }
 
