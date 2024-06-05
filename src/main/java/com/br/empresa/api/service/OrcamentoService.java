@@ -55,7 +55,6 @@ public class OrcamentoService {
         }
     }
 
-    @Transactional
     public OrcamentoResponseDto cadastrarOrcamento(OrcamentoRequestDto dto) {
 
         Orcamento orcamento = Orcamento.builder()
@@ -69,4 +68,21 @@ public class OrcamentoService {
         logger.info("Orcamento salvo com sucesso: {}", orcamentoSalvo);
         return mapper.map(orcamentoSalvo, OrcamentoResponseDto.class);
     }
+
+    public OrcamentoResponseDto atualizarOrcamento(OrcamentoRequestDto dto) {
+        return orcamentoRepository.findById(dto.getId())
+                .map(orcamento -> {
+                    orcamento.setDescricao(dto.getDescricao());
+                    orcamento.setValor(dto.getValor());
+                    orcamento.setDataInicio(dto.getDataInicio());
+                    orcamento.setDataFinal(dto.getDataFinal());
+                    Orcamento orcamentoAtualizado = orcamentoRepository.save(orcamento);
+                    return mapper.map(orcamentoAtualizado, OrcamentoResponseDto.class);
+                })
+                .orElseThrow(() -> {
+                    logger.error("Orcamento não encontrado com o id: {}", dto.getId());
+                    return new EntityNotFoundException("Orçamento não encontrado com o id: " + dto.getId());
+                });
+    }
 }
+
