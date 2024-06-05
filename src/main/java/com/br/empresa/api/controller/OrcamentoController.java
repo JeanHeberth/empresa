@@ -6,10 +6,9 @@ import com.br.empresa.api.service.OrcamentoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/orcamentos")
@@ -17,6 +16,11 @@ public class OrcamentoController {
 
     @Autowired
     OrcamentoService orcamentoService;
+
+    @GetMapping
+    public ResponseEntity<List<OrcamentoResponseDto>> buscarTodosOrcamento() {
+        return ResponseEntity.ok(orcamentoService.buscarOrcamentos());
+    }
 
     @PostMapping
     public ResponseEntity<OrcamentoResponseDto> cadastrarOrcamento(@RequestBody @Valid OrcamentoRequestDto dto) {

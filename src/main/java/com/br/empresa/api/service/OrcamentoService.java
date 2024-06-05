@@ -11,6 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class OrcamentoService {
 
@@ -20,6 +24,22 @@ public class OrcamentoService {
     private final ModelMapper mapper = new ModelMapper();
     private static final Logger logger = LoggerFactory.getLogger(OrcamentoService.class);
 
+
+    public List<OrcamentoResponseDto> buscarOrcamentos() {
+        try {
+            List<Orcamento> orcamentos = orcamentoRepository.findAll();
+            if (orcamentos.isEmpty()) {
+                logger.info("Nenhum orçamento encontrado");
+                return Collections.emptyList();
+            }
+            return orcamentos.stream()
+                    .map(orcamento -> mapper.map(orcamento, OrcamentoResponseDto.class))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("Erro ao buscar orçamentos ", e);
+            throw new RuntimeException("Erro ao buscar orçamentos", e);
+        }
+    }
 
     @Transactional
     public OrcamentoResponseDto cadastrarOrcamento(OrcamentoRequestDto dto) {
