@@ -40,7 +40,6 @@ public class FuncionarioService {
     }
 
     public FuncionarioResponseDto cadastrarFuncionario(FuncionarioRequestDto dto) {
-
         Funcionario funcionario = Funcionario.builder()
                 .nome(dto.getNome())
                 .cpf(dto.getCpf())
@@ -52,9 +51,9 @@ public class FuncionarioService {
                 .salario(dto.getSalario())
                 .supervisor(dto.getSupervisor())
                 .build();
+        Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario);
+        return new FuncionarioResponseDto(funcionarioSalvo);
 
-        Funcionario funcionarioResponseDto = funcionarioRepository.save(funcionario);
-        return new FuncionarioResponseDto(funcionarioResponseDto);
 
     }
 
