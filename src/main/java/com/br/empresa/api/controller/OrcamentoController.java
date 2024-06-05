@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/orcamentos")
+@RequestMapping("/api/orcamento")
 public class OrcamentoController {
 
     @Autowired
@@ -20,6 +20,11 @@ public class OrcamentoController {
     @GetMapping
     public ResponseEntity<List<OrcamentoResponseDto>> buscarTodosOrcamento() {
         return ResponseEntity.ok(orcamentoService.buscarOrcamentos());
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<OrcamentoResponseDto> buscarOrcamentoPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(orcamentoService.buscarOrcamentoPorId(id));
     }
 
     @PostMapping
