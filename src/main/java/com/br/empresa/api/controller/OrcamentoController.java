@@ -31,4 +31,10 @@ public class OrcamentoController {
     public ResponseEntity<OrcamentoResponseDto> cadastrarOrcamento(@RequestBody @Valid OrcamentoRequestDto dto) {
         return ResponseEntity.ok(orcamentoService.cadastrarOrcamento(dto));
     }
+
+    @PutMapping
+    public ResponseEntity<OrcamentoResponseDto> atualizarOrcamento(@RequestBody @Valid OrcamentoRequestDto dto) {
+        OrcamentoResponseDto orcamentoAtualizado = orcamentoService.atualizarOrcamento(dto);
+        return ResponseEntity.ok(orcamentoAtualizado);
+    }
 }
