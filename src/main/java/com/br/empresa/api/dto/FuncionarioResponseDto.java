@@ -19,6 +19,8 @@ public class FuncionarioResponseDto {
 
     private String cpf;
 
+    private String endereco;
+
     private String email;
 
     private String telefone;
@@ -33,6 +35,7 @@ public class FuncionarioResponseDto {
         this.id = funcionario.getId();
         this.nome = funcionario.getNome();
         this.cpf = funcionario.getCpf();
+        this.endereco = funcionario.getEndereco();
         this.email = funcionario.getEmail();
         this.telefone = funcionario.getTelefone();
         this.dataNascimento = funcionario.getDataNascimento();

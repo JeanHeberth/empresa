@@ -19,6 +19,8 @@ public class FuncionarioRequestDto {
 
     private String cpf;
 
+    private String endereco;
+
     private String email;
 
     private String senha;
