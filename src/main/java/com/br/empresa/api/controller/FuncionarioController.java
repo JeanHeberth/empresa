@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/funcionarios")
+@RequestMapping("api/funcionario")
 public class FuncionarioController {
 
     @Autowired
@@ -41,17 +41,6 @@ public class FuncionarioController {
         funcionarioService.criptografarSenha(dto);
         return ResponseEntity.ok(funcionarioService.cadastrarFuncionario(dto));
     }
-
-//    @PutMapping
-//    public ResponseEntity<FuncionarioResponseDto> atualizarFuncionario(@PathVariable Long id, @RequestBody FuncionarioRequestDto dto) {
-//        criptografarSenha(dto);
-//
-//        if (id == null) {
-//            throw new IllegalArgumentException("O ID do funcionário não pode ser nulo.");
-//        }
-//        FuncionarioResponseDto funcionarioAtualizado = funcionarioService.atualizarFuncionario(id, dto);
-//        return ResponseEntity.ok(funcionarioAtualizado);
-//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<FuncionarioResponseDto> atualizarFuncionario(

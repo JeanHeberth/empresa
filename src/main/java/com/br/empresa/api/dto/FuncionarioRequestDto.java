@@ -14,26 +14,16 @@ import java.time.LocalDate;
 public class FuncionarioRequestDto {
 
     private Long id;
-
     private String nome;
-
     private String cpf;
-
-    private String endereco;
-
     private String email;
-
     private String senha;
-
     private String telefone;
-
     private LocalDate dataNascimento;
-
     private char sexo;
-
     private Double salario;
-
-    private Funcionario supervisor;
+    private Long idSupervisor;
+    private Long idEndereco;
 
     public FuncionarioRequestDto(String nome, String email, String numero) {
     }

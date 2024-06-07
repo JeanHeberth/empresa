@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -20,9 +22,6 @@ public class Funcionario extends GenericDomain {
 
     @Column(nullable = false)
     private String cpf;
-
-    @Column(nullable = false)
-    private String endereco;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -42,6 +41,24 @@ public class Funcionario extends GenericDomain {
     @ManyToOne
     private Funcionario supervisor;
 
+    @OneToOne
+    private Endereco endereco;
+
+    @OneToMany(mappedBy = "supervisor")
+    private List<Funcionario> subordinados;
+
+
+    public void adicionarSubordinados(Funcionario funcionario) {
+        getSubordinados().add(funcionario);
+        funcionario.setSupervisor(this);
+    }
+
+    public List<Funcionario> getSubordinados() {
+        if (subordinados == null) {
+            subordinados = new ArrayList<>();
+        }
+        return subordinados;
+    }
     public Funcionario(String nome, String email, String telefone, String salario) {
         this.nome = nome;
         this.email = email;

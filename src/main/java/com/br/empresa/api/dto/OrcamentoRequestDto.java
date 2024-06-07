@@ -16,4 +16,5 @@ public class OrcamentoRequestDto {
     private Double valor;
     private LocalDate dataInicio;
     private LocalDate dataFinal;
+    private Long idDepartamento;
 }

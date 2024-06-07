@@ -14,33 +14,28 @@ import java.time.LocalDate;
 public class FuncionarioResponseDto {
 
     private Long id;
-
     private String nome;
-
     private String cpf;
-
-    private String endereco;
-
     private String email;
-
     private String telefone;
-
     private LocalDate dataNascimento;
-
     private char sexo;
-
     private Double salario;
+    private Long idSupervisor;
+    private Long idEndereco;
+
 
     public FuncionarioResponseDto(Funcionario funcionario) {
         this.id = funcionario.getId();
         this.nome = funcionario.getNome();
         this.cpf = funcionario.getCpf();
-        this.endereco = funcionario.getEndereco();
         this.email = funcionario.getEmail();
         this.telefone = funcionario.getTelefone();
         this.dataNascimento = funcionario.getDataNascimento();
         this.sexo = funcionario.getSexo();
         this.salario = funcionario.getSalario();
+        this.idSupervisor = (funcionario.getSupervisor() != null) ? funcionario.getSupervisor().getId() : null;
+        this.idEndereco = funcionario.getEndereco().getId();
     }
 
 

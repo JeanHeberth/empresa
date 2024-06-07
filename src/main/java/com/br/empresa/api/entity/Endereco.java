@@ -3,6 +3,7 @@ package com.br.empresa.api.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,4 +30,7 @@ public class Endereco extends GenericDomain {
 
     @Column(nullable = false)
     private String cep;
+
+    @OneToOne(mappedBy = "endereco")
+    private Funcionario funcionario;
 }
