@@ -78,11 +78,11 @@ public class EnderecoService {
     public EnderecoResponseDto atualizarEndereco(EnderecoRequestDto dto) {
         return enderecoRepository.findById(dto.getId())
                 .map(endereco -> {
-                    endereco.setPais(endereco.getPais());
-                    endereco.setUf(endereco.getUf());
-                    endereco.setCidade(endereco.getCidade());
-                    endereco.setRua(endereco.getRua());
-                    endereco.setCep(endereco.getCep());
+                    endereco.setPais(dto.getPais());
+                    endereco.setUf(dto.getUf());
+                    endereco.setCidade(dto.getCidade());
+                    endereco.setRua(dto.getRua());
+                    endereco.setCep(dto.getCep());
                     Endereco enderecoAtualizado = enderecoRepository.save(endereco);
                     return mapper.map(enderecoAtualizado, EnderecoResponseDto.class);
                 })
