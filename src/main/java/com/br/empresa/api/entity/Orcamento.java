@@ -2,6 +2,7 @@ package com.br.empresa.api.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,5 +28,8 @@ public class Orcamento extends GenericDomain {
 
     @Column(nullable = false)
     private LocalDate dataFinal;
+
+    @ManyToOne
+    private Departamento departamento;
 
 }

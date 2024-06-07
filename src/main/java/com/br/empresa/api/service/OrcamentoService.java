@@ -2,8 +2,10 @@ package com.br.empresa.api.service;
 
 import com.br.empresa.api.dto.OrcamentoRequestDto;
 import com.br.empresa.api.dto.OrcamentoResponseDto;
+import com.br.empresa.api.entity.Departamento;
 import com.br.empresa.api.entity.Orcamento;
 import com.br.empresa.api.exception.EntityNotFoundException;
+import com.br.empresa.api.repository.DepartamentoRepository;
 import com.br.empresa.api.repository.OrcamentoRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -22,6 +24,8 @@ public class OrcamentoService {
 
     @Autowired
     OrcamentoRepository orcamentoRepository;
+    @Autowired
+    DepartamentoRepository departamentoRepository;
 
     private final ModelMapper mapper = new ModelMapper();
     private static final Logger logger = LoggerFactory.getLogger(OrcamentoService.class);
@@ -63,6 +67,8 @@ public class OrcamentoService {
                 .dataInicio(dto.getDataInicio())
                 .dataFinal(dto.getDataFinal())
                 .build();
+        Optional<Departamento> departamento = departamentoRepository.findById(dto.getIdDepartamento());
+        orcamento.setDepartamento(departamento.get());
         Orcamento orcamentoSalvo = orcamentoRepository.save(orcamento);
 
         logger.info("Orcamento salvo com sucesso: {}", orcamentoSalvo);
