@@ -20,22 +20,22 @@ public class EnderecoController {
     EnderecoService enderecoService;
 
     @GetMapping
-    public ResponseEntity<List<EnderecoResponseDto>> buscarTodosOrcamento() {
+    public ResponseEntity<List<EnderecoResponseDto>> buscarTodosEnderecos() {
         return ResponseEntity.ok(enderecoService.buscarEnderecos());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<EnderecoResponseDto> buscarOrcamentoPorId(@PathVariable Long id) {
+    public ResponseEntity<EnderecoResponseDto> buscarEnderecoPorId(@PathVariable Long id) {
         return ResponseEntity.ok(enderecoService.buscarEnderecoPorId(id));
     }
 
     @PostMapping
-    public ResponseEntity<EnderecoResponseDto> cadastrarOrcamento(@RequestBody @Valid EnderecoRequestDto dto) {
+    public ResponseEntity<EnderecoResponseDto> cadastrarEndereco(@RequestBody @Valid EnderecoRequestDto dto) {
         return ResponseEntity.ok(enderecoService.cadastrarEndereco(dto));
     }
 
     @PutMapping
-    public ResponseEntity<EnderecoResponseDto> atualizarOrcamento(@RequestBody @Valid EnderecoRequestDto dto) {
+    public ResponseEntity<EnderecoResponseDto> atualizarEndereco(@RequestBody EnderecoRequestDto dto) {
         EnderecoResponseDto enderecoAtualizado = enderecoService.atualizarEndereco(dto);
         return ResponseEntity.ok(enderecoAtualizado);
     }

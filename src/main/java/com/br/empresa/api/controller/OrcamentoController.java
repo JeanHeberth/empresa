@@ -33,7 +33,7 @@ public class OrcamentoController {
     }
 
     @PutMapping
-    public ResponseEntity<OrcamentoResponseDto> atualizarOrcamento(@RequestBody @Valid OrcamentoRequestDto dto) {
+    public ResponseEntity<OrcamentoResponseDto> atualizarOrcamento(@RequestBody OrcamentoRequestDto dto) {
         OrcamentoResponseDto orcamentoAtualizado = orcamentoService.atualizarOrcamento(dto);
         return ResponseEntity.ok(orcamentoAtualizado);
     }
