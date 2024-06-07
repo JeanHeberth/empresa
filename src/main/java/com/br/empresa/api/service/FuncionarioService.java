@@ -129,7 +129,8 @@ public class FuncionarioService {
         funcionarioExistente.setDataNascimento(dto.getDataNascimento());
         funcionarioExistente.setSexo(dto.getSexo());
         funcionarioExistente.setSalario(dto.getSalario());
-// Verificação e associação do supervisor, se existir
+
+        // Verificação e associação do supervisor, se existir
         if (dto.getIdSupervisor() != null) {
             Optional<Funcionario> optionalSupervisor = funcionarioRepository.findById(dto.getIdSupervisor());
             if (optionalSupervisor.isPresent()) {

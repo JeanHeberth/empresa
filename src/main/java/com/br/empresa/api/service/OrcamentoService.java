@@ -7,7 +7,6 @@ import com.br.empresa.api.entity.Orcamento;
 import com.br.empresa.api.exception.EntityNotFoundException;
 import com.br.empresa.api.repository.DepartamentoRepository;
 import com.br.empresa.api.repository.OrcamentoRepository;
-import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
