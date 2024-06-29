@@ -7,6 +7,7 @@ import com.br.empresa.api.dto.OrcamentoResponseDto;
 import com.br.empresa.api.service.EnderecoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/endereco")
+@CrossOrigin("http://localhost:4200")
 public class EnderecoController {
 
     @Autowired
@@ -30,6 +32,7 @@ public class EnderecoController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<EnderecoResponseDto> cadastrarEndereco(@RequestBody @Valid EnderecoRequestDto dto) {
         return ResponseEntity.ok(enderecoService.cadastrarEndereco(dto));
     }

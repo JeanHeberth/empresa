@@ -2,6 +2,8 @@ package com.br.empresa.api.controller;
 
 import com.br.empresa.api.dto.FuncionarioRequestDto;
 import com.br.empresa.api.dto.FuncionarioResponseDto;
+import com.br.empresa.api.entity.Funcionario;
+import com.br.empresa.api.exception.EntityNotFoundException;
 import com.br.empresa.api.service.FuncionarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,16 @@ public class FuncionarioController {
 
     @Autowired
     FuncionarioService funcionarioService;
+
+    @PostMapping("/autenticar")
+    public ResponseEntity autenticar(@RequestBody FuncionarioRequestDto usuarioDTO) {
+        try {
+            Funcionario usuarioAutenticado = funcionarioService.autenticar(usuarioDTO.getEmail(), usuarioDTO.getSenha());
+            return ResponseEntity.ok(usuarioAutenticado);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     public FuncionarioController(FuncionarioService funcionarioService) {
         this.funcionarioService = funcionarioService;
@@ -38,7 +50,6 @@ public class FuncionarioController {
 
     @PostMapping()
     public ResponseEntity<FuncionarioResponseDto> cadastrarFuncionario(@RequestBody @Valid FuncionarioRequestDto dto) {
-        funcionarioService.criptografarSenha(dto);
         return ResponseEntity.ok(funcionarioService.cadastrarFuncionario(dto));
     }
 

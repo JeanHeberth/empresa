@@ -15,5 +15,13 @@ public class EnderecoRequestDto {
     private String cidade;
     private String rua;
     private String cep;
+    private String quadra;
+    private String casa;
+    private String complemento;
+    private String estado;
+    private String bairro;
+    private String logradouro;
+
+
 
 }

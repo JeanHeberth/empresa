@@ -9,7 +9,6 @@ import com.br.empresa.api.repository.EnderecoRepository;
 import com.br.empresa.api.repository.FuncionarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,9 +24,21 @@ public class FuncionarioService {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
-    private BCryptPasswordEncoder enconder = new BCryptPasswordEncoder();
+//    private BCryptPasswordEncoder enconder = new BCryptPasswordEncoder();
 
     private ModelMapper mapper = new ModelMapper();
+
+
+    public Funcionario autenticar(String email, String senha) {
+        Optional<Funcionario> usuario = funcionarioRepository.findByEmail(email);
+        if (!usuario.isPresent()) {
+            throw new EntityNotFoundException("Usuário não encontrado para o email informado.");
+        }
+        if (!usuario.get().getSenha().equals(senha)) {
+            throw new EntityNotFoundException("Senha inválida.");
+        }
+        return usuario.get();
+    }
 
 
     public List<FuncionarioResponseDto> buscarFuncionarios() {
@@ -172,10 +183,7 @@ public class FuncionarioService {
         }
     }
 
-    public void criptografarSenha(FuncionarioRequestDto dto) {
-        // Criptografando a senha do usuário
-        dto.setSenha(enconder.encode(dto.getSenha()));
-    }
+
 }
 
 
