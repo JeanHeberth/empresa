@@ -21,7 +21,7 @@ public class Endereco extends GenericDomain {
     private String rua;
     private String quadra;
 
-    //    @Column(nullable = false)
+    @Column(nullable = false)
     private String cep;
 
     @Column(nullable = false)
@@ -30,13 +30,13 @@ public class Endereco extends GenericDomain {
     @Column(nullable = false)
     private String bairro;
 
-    //    @Column(nullable = false)
+    @Column(nullable = false)
     private String cidade;
 
-    //    @Column(nullable = false)
+    @Column(nullable = false)
     private String estado;
 
-    //    @Column(nullable = false)
+    @Column(nullable = false)
     private String casa;
 
     @Column(nullable = false)
