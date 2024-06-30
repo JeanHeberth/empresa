@@ -6,6 +6,7 @@ import com.br.empresa.api.dto.DepartamentoResponseDto;
 import com.br.empresa.api.service.DepartamentoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/departamento")
+@CrossOrigin("http://localhost:4200")
 public class DepartamentoController {
 
 
@@ -35,11 +37,12 @@ public class DepartamentoController {
     }
 
     @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<DepartamentoResponseDto> cadastrarDepartamento(@RequestBody @Valid DepartamentoRequestDto dto) {
         return ResponseEntity.ok(departamentoService.cadastrarDepartamento(dto));
     }
 
-    @PutMapping()
+    @PutMapping("/{id}")
     public ResponseEntity<DepartamentoResponseDto> atualizarDepartamento(@Valid @RequestBody DepartamentoRequestDto dto) {
         DepartamentoResponseDto funcionarioAtualizado = departamentoService.atualizarDepartamento(dto);
         return ResponseEntity.ok(funcionarioAtualizado);

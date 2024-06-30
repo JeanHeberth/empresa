@@ -1,10 +1,12 @@
 package com.br.empresa.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -22,9 +24,11 @@ public class Projeto extends GenericDomain {
     private Double valorProjeto;
 
     @Column(nullable = false)
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataInicio;
 
     @Column(nullable = false)
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataFinal;
 
     @ManyToOne

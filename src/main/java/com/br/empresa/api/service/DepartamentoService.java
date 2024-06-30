@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -77,6 +79,7 @@ public class DepartamentoService {
         Departamento departamento = Departamento.builder()
                 .nome(dto.getNome())
                 .numero(String.valueOf(dto.getNumero()))
+                .dataCadastro(dto.getDataCadastro() == null ? LocalDate.now(ZoneId.systemDefault()) : dto.getDataCadastro())
                 .build();
 
         // Salvamento do departamento
@@ -95,6 +98,7 @@ public class DepartamentoService {
                 .map(departamento -> {
                     departamento.setNome(dto.getNome());
                     departamento.setNumero(String.valueOf(dto.getNumero()));
+                    departamento.setDataCadastro(LocalDate.now());
                     Departamento departamentoAtualizado = departamentoRepository.save(departamento);
                     logger.info("Departamento atualizado com sucesso: {}", departamentoAtualizado);
                     return mapper.map(departamentoAtualizado, DepartamentoResponseDto.class);

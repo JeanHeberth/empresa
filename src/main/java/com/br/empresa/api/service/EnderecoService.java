@@ -63,11 +63,13 @@ public class EnderecoService {
     public EnderecoResponseDto cadastrarEndereco(EnderecoRequestDto dto) {
 
         Endereco endereco = Endereco.builder()
-                .pais(dto.getPais())
-                .uf(dto.getUf())
-                .cidade(dto.getCidade())
-                .rua(dto.getRua())
                 .cep(dto.getCep())
+                .logradouro(dto.getLogradouro())
+                .bairro(dto.getBairro())
+                .estado(dto.getEstado())
+                .cidade(dto.getCidade())
+                .complemento(dto.getComplemento())
+                .casa(dto.getCasa())
                 .build();
 
         Endereco enderecoSalvo = enderecoRepository.save(endereco);

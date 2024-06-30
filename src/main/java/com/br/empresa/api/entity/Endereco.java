@@ -16,20 +16,31 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Endereco extends GenericDomain {
 
-    @Column(nullable = false)
     private String pais;
+    private String uf;
+    private String rua;
+    private String quadra;
 
     @Column(nullable = false)
-    private String uf;
+    private String cep;
+
+    @Column(nullable = false)
+    private String logradouro;
+
+    @Column(nullable = false)
+    private String bairro;
 
     @Column(nullable = false)
     private String cidade;
 
     @Column(nullable = false)
-    private String rua;
+    private String estado;
 
     @Column(nullable = false)
-    private String cep;
+    private String casa;
+
+    @Column(nullable = false)
+    private String complemento;
 
     @OneToOne(mappedBy = "endereco")
     private Funcionario funcionario;
