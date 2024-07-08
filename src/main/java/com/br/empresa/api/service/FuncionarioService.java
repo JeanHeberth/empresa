@@ -29,16 +29,16 @@ public class FuncionarioService {
     private ModelMapper mapper = new ModelMapper();
 
 
-    public Funcionario autenticar(String email, String senha) {
-        Optional<Funcionario> usuario = funcionarioRepository.findByEmail(email);
-        if (!usuario.isPresent()) {
-            throw new EntityNotFoundException("Usuário não encontrado para o email informado.");
-        }
-        if (!usuario.get().getSenha().equals(senha)) {
-            throw new EntityNotFoundException("Senha inválida.");
-        }
-        return usuario.get();
-    }
+//    public Funcionario autenticar(String email, String senha) {
+//        Optional<Funcionario> usuario = funcionarioRepository.findByEmail(email);
+//        if (!usuario.isPresent()) {
+//            throw new EntityNotFoundException("Usuário não encontrado para o email informado.");
+//        }
+//        if (!usuario.get().getSenha().equals(senha)) {
+//            throw new EntityNotFoundException("Senha inválida.");
+//        }
+//        return usuario.get();
+//    }
 
 
     public List<FuncionarioResponseDto> buscarFuncionarios() {
@@ -76,7 +76,6 @@ public class FuncionarioService {
                 .cpf(dto.getCpf())
                 .telefone(dto.getTelefone())
                 .cargo(dto.getCargo())
-                .senha(dto.getSenha())
                 .email(dto.getEmail())
                 .dataNascimento(dto.getDataNascimento())
                 .sexo(dto.getSexo())
@@ -137,6 +136,7 @@ public class FuncionarioService {
         funcionarioExistente.setNome(dto.getNome());
         funcionarioExistente.setEmail(dto.getEmail());
         funcionarioExistente.setCpf(dto.getCpf());
+        funcionarioExistente.setCargo(dto.getCargo());
         funcionarioExistente.setTelefone(dto.getTelefone());
         funcionarioExistente.setDataNascimento(dto.getDataNascimento());
         funcionarioExistente.setSexo(dto.getSexo());

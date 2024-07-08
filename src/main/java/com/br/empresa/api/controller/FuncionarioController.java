@@ -18,16 +18,16 @@ public class FuncionarioController {
 
     @Autowired
     FuncionarioService funcionarioService;
-
-    @PostMapping("/autenticar")
-    public ResponseEntity autenticar(@RequestBody FuncionarioRequestDto usuarioDTO) {
-        try {
-            Funcionario usuarioAutenticado = funcionarioService.autenticar(usuarioDTO.getEmail(), usuarioDTO.getSenha());
-            return ResponseEntity.ok(usuarioAutenticado);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//
+//    @PostMapping("/autenticar")
+//    public ResponseEntity autenticar(@RequestBody FuncionarioRequestDto usuarioDTO) {
+//        try {
+//            Funcionario usuarioAutenticado = funcionarioService.autenticar(usuarioDTO.getEmail(), usuarioDTO.getSenha());
+//            return ResponseEntity.ok(usuarioAutenticado);
+//        } catch (EntityNotFoundException e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 
     @GetMapping()
     public ResponseEntity<List<FuncionarioResponseDto>> buscarTodosFuncionarios() {
@@ -49,7 +49,7 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarioService.cadastrarFuncionario(dto));
     }
 
-    @PutMapping()
+    @PutMapping("/{id}")
     public ResponseEntity<FuncionarioResponseDto> atualizarFuncionario(@RequestBody FuncionarioRequestDto dto) {
         FuncionarioResponseDto funcionarioAtualizado = funcionarioService.atualizarFuncionario(dto.getId(), dto);
         return ResponseEntity.ok(funcionarioAtualizado);
