@@ -1,6 +1,7 @@
 package com.br.empresa.api.dto;
 
 import com.br.empresa.api.entity.Funcionario;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,10 @@ public class FuncionarioRequestDto {
     private String cpf;
     private String email;
     private String senha;
+    private String cargo;
+
     private String telefone;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
     private char sexo;
     private Double salario;

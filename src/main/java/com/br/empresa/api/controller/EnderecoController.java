@@ -26,7 +26,7 @@ public class EnderecoController {
         return ResponseEntity.ok(enderecoService.buscarEnderecos());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<EnderecoResponseDto> buscarEnderecoPorId(@PathVariable Long id) {
         return ResponseEntity.ok(enderecoService.buscarEnderecoPorId(id));
     }
@@ -37,9 +37,15 @@ public class EnderecoController {
         return ResponseEntity.ok(enderecoService.cadastrarEndereco(dto));
     }
 
-    @PutMapping
-    public ResponseEntity<EnderecoResponseDto> atualizarEndereco(@RequestBody EnderecoRequestDto dto) {
+    @PutMapping("/{id}")
+    public ResponseEntity<EnderecoResponseDto> atualizarEndereco(@RequestBody @Valid EnderecoRequestDto dto) {
         EnderecoResponseDto enderecoAtualizado = enderecoService.atualizarEndereco(dto);
         return ResponseEntity.ok(enderecoAtualizado);
     }
+
+    @DeleteMapping("/{id}")
+    public void apagarEndereco(@PathVariable Long id) {
+        enderecoService.deletarEndereco(id);
+    }
+
 }

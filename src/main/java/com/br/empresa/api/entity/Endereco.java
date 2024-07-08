@@ -4,6 +4,7 @@ package com.br.empresa.api.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,9 +38,10 @@ public class Endereco extends GenericDomain {
     private String estado;
 
     @Column(nullable = false)
+    @NotNull
     private String casa;
 
-    @Column(nullable = false)
+    @NotNull
     private String complemento;
 
     @OneToOne(mappedBy = "endereco")

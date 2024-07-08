@@ -80,11 +80,15 @@ public class EnderecoService {
     public EnderecoResponseDto atualizarEndereco(EnderecoRequestDto dto) {
         return enderecoRepository.findById(dto.getId())
                 .map(endereco -> {
-                    endereco.setPais(dto.getPais());
-                    endereco.setUf(dto.getUf());
-                    endereco.setCidade(dto.getCidade());
-                    endereco.setRua(dto.getRua());
                     endereco.setCep(dto.getCep());
+                    endereco.setLogradouro(dto.getLogradouro());
+                    endereco.setBairro(dto.getBairro());
+                    endereco.setEstado(dto.getEstado());
+                    endereco.setCidade(dto.getCidade());
+                    endereco.setComplemento(dto.getComplemento());
+                    endereco.setCasa(dto.getCasa());
+
+
                     Endereco enderecoAtualizado = enderecoRepository.save(endereco);
                     return mapper.map(enderecoAtualizado, EnderecoResponseDto.class);
                 })
@@ -92,6 +96,15 @@ public class EnderecoService {
                     logger.error("Endereco não encontrado com o id: {}", dto.getId());
                     return new EntityNotFoundException("Endereco não encontrado com o id: " + dto.getId());
                 });
+    }
+
+    public void deletarEndereco(Long id) {
+        Optional<Endereco> optionalEndereco = this.enderecoRepository.findById(id);
+        if (optionalEndereco.isPresent()) {
+            this.enderecoRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Endereço não encontrado");
+        }
     }
 }
 

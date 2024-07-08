@@ -75,6 +75,7 @@ public class FuncionarioService {
                 .nome(dto.getNome())
                 .cpf(dto.getCpf())
                 .telefone(dto.getTelefone())
+                .cargo(dto.getCargo())
                 .senha(dto.getSenha())
                 .email(dto.getEmail())
                 .dataNascimento(dto.getDataNascimento())

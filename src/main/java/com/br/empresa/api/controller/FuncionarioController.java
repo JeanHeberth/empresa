@@ -29,10 +29,6 @@ public class FuncionarioController {
         }
     }
 
-    public FuncionarioController(FuncionarioService funcionarioService) {
-        this.funcionarioService = funcionarioService;
-    }
-
     @GetMapping()
     public ResponseEntity<List<FuncionarioResponseDto>> buscarTodosFuncionarios() {
         return ResponseEntity.ok(funcionarioService.buscarFuncionarios());
