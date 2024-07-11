@@ -26,11 +26,9 @@ public class Orcamento extends GenericDomain {
     private Double valor;
 
     @Column(nullable = false)
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataInicio;
 
     @Column(nullable = false)
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataFinal;
 
     @ManyToOne

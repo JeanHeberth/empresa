@@ -18,9 +18,6 @@ public class DepartamentoRequestDto {
 
     private Long numero;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    private LocalDate dataCadastro;
-
 
     public DepartamentoRequestDto(String nome, String numero) {
     }

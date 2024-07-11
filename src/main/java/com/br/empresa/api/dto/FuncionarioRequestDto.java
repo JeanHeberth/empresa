@@ -21,7 +21,7 @@ public class FuncionarioRequestDto {
     private String cargo;
 
     private String telefone;
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataNascimento;
     private char sexo;
     private Double salario;
