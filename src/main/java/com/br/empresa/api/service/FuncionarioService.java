@@ -8,6 +8,8 @@ import com.br.empresa.api.exception.EntityNotFoundException;
 import com.br.empresa.api.repository.EnderecoRepository;
 import com.br.empresa.api.repository.FuncionarioRepository;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,21 +26,9 @@ public class FuncionarioService {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
-//    private BCryptPasswordEncoder enconder = new BCryptPasswordEncoder();
+    private static final Logger logger = LoggerFactory.getLogger(OrcamentoService.class);
 
     private ModelMapper mapper = new ModelMapper();
-
-
-//    public Funcionario autenticar(String email, String senha) {
-//        Optional<Funcionario> usuario = funcionarioRepository.findByEmail(email);
-//        if (!usuario.isPresent()) {
-//            throw new EntityNotFoundException("Usuário não encontrado para o email informado.");
-//        }
-//        if (!usuario.get().getSenha().equals(senha)) {
-//            throw new EntityNotFoundException("Senha inválida.");
-//        }
-//        return usuario.get();
-//    }
 
 
     public List<FuncionarioResponseDto> buscarFuncionarios() {
@@ -50,35 +40,30 @@ public class FuncionarioService {
     }
 
     public FuncionarioResponseDto buscarFuncionarioPorId(Long id) {
-        Funcionario funcionarioExistente = funcionarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
-        return new FuncionarioResponseDto(funcionarioExistente);
+
+        logger.info("Buscando funcionário por id: " + id);
+        Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
+        if (!funcionario.isPresent()) {
+            throw new EntityNotFoundException("Funcionário com o id " + id + " não encontrado");
+        }
+        return mapper.map(funcionario.get(), FuncionarioResponseDto.class);
 
     }
 
     public FuncionarioResponseDto cadastrarFuncionario(FuncionarioRequestDto dto) {
 
         // Verificação de email duplicado
-        Optional<Funcionario> funcionarioOptionalEmail = funcionarioRepository.findByEmail(dto.getEmail());
+        Optional<Funcionario> funcionarioOptionalEmail = funcionarioRepository.findByEmailCorporativo(dto.getEmailCorporativo());
         if (funcionarioOptionalEmail.isPresent()) {
             throw new EntityNotFoundException("Já existe um usuário com o email ou endereço cadastrado");
         }
 
-        // Verificação de CPF duplicado
-        Optional<Funcionario> funcionarioOptionalCpf = funcionarioRepository.findByCpf(dto.getCpf());
-        if (funcionarioOptionalCpf.isPresent()) {
-            throw new EntityNotFoundException("Já existe um usuário com o CPF cadastrado");
-        }
-
-
+        logger.info("Cadastrando funcionário: " + dto);
         Funcionario funcionario = Funcionario.builder()
-                .nome(dto.getNome())
-                .cpf(dto.getCpf())
-                .telefone(dto.getTelefone())
+                .matricula(dto.getMatricula())
                 .cargo(dto.getCargo())
-                .email(dto.getEmail())
-                .dataNascimento(dto.getDataNascimento())
-                .sexo(dto.getSexo())
+                .emailCorporativo(dto.getEmailCorporativo())
+                .dataAdmissao(dto.getDataAdmissao())
                 .salario(dto.getSalario())
                 .build();
 
@@ -92,23 +77,8 @@ public class FuncionarioService {
                 throw new EntityNotFoundException("Supervisor com o id " + dto.getIdSupervisor() + " não encontrado");
             }
         }
-
-        // Verificação se o endereço já está associado a outro funcionário
-        Optional<Funcionario> funcionarioOptionalEndereco = funcionarioRepository.findByEnderecoId(dto.getIdEndereco());
-        if (funcionarioOptionalEndereco.isPresent()) {
-            throw new EntityNotFoundException("Já existe um usuário associado ao endereço fornecido");
-        }
-
-        // Verificação e associação do endereço
-        Optional<Endereco> endereco = enderecoRepository.findById(dto.getIdEndereco());
-        if (endereco.isPresent()) {
-            endereco.get().setFuncionario(funcionario);
-            funcionario.setEndereco(endereco.get());
-            Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario);
-            return new FuncionarioResponseDto(funcionarioSalvo);
-        } else {
-            throw new RuntimeException("Endereço com o id" + dto.getIdEndereco() + " não encontrado");
-        }
+        Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario);
+        return new FuncionarioResponseDto(funcionarioSalvo);
     }
 
     public FuncionarioResponseDto atualizarFuncionario(Long id, FuncionarioRequestDto dto) {
@@ -121,25 +91,17 @@ public class FuncionarioService {
         Funcionario funcionarioExistente = funcionarioOptional.get();
 
         // Verificação de email duplicado
-        Optional<Funcionario> funcionarioOptionalEmail = funcionarioRepository.findByEmail(dto.getEmail());
+        Optional<Funcionario> funcionarioOptionalEmail = funcionarioRepository.findByEmailCorporativo(dto.getEmailCorporativo());
         if (funcionarioOptionalEmail.isPresent() && !funcionarioOptionalEmail.get().getId().equals(id)) {
             throw new EntityNotFoundException("Já existe um usuário com o email cadastrado");
         }
 
-        // Verificação de CPF duplicado
-        Optional<Funcionario> funcionarioOptionalCpf = funcionarioRepository.findByCpf(dto.getCpf());
-        if (funcionarioOptionalCpf.isPresent() && !funcionarioOptionalCpf.get().getId().equals(id)) {
-            throw new EntityNotFoundException("Já existe um usuário com o CPF cadastrado");
-        }
-
+        // Atualização do funcionário
         funcionarioExistente.setId(dto.getId());
-        funcionarioExistente.setNome(dto.getNome());
-        funcionarioExistente.setEmail(dto.getEmail());
-        funcionarioExistente.setCpf(dto.getCpf());
+        funcionarioExistente.setMatricula(dto.getMatricula());
+        funcionarioExistente.setEmailCorporativo(dto.getEmailCorporativo());
         funcionarioExistente.setCargo(dto.getCargo());
-        funcionarioExistente.setTelefone(dto.getTelefone());
-        funcionarioExistente.setDataNascimento(dto.getDataNascimento());
-        funcionarioExistente.setSexo(dto.getSexo());
+        funcionarioExistente.setDataAdmissao(dto.getDataAdmissao());
         funcionarioExistente.setSalario(dto.getSalario());
 
         // Verificação e associação do supervisor, se existir
@@ -154,21 +116,6 @@ public class FuncionarioService {
             }
         } else {
             funcionarioExistente.setSupervisor(null); // Remove o supervisor se não for fornecido
-        }
-
-        // Verificação se o endereço já está associado a outro funcionário
-        Optional<Funcionario> funcionarioOptionalEndereco = funcionarioRepository.findByEnderecoId(dto.getIdEndereco());
-        if (funcionarioOptionalEndereco.isPresent() && !funcionarioOptionalEndereco.get().getId().equals(id)) {
-            throw new EntityNotFoundException("Já existe um usuário associado ao endereço fornecido");
-        }
-
-        // Verificação e associação do endereço
-        Optional<Endereco> endereco = enderecoRepository.findById(dto.getIdEndereco());
-        if (endereco.isPresent()) {
-            endereco.get().setFuncionario(funcionarioExistente);
-            funcionarioExistente.setEndereco(endereco.get());
-        } else {
-            throw new RuntimeException("Endereço com o id " + dto.getIdEndereco() + " não encontrado");
         }
 
         Funcionario funcionarioSalvo = funcionarioRepository.save(funcionarioExistente);
