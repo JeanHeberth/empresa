@@ -61,8 +61,7 @@ public class OrcamentoService {
 
     public OrcamentoResponseDto cadastrarOrcamento(OrcamentoRequestDto dto) {
 
-        LocalDate dataInicial = dto.getDataFinal().isBefore(dto.getDataInicio()) ? dto.getDataFinal() : dto.getDataInicio();
-
+        logger.info("Cadastrando orçamento: {}", dto);
         Orcamento orcamento = Orcamento.builder()
                 .descricao(dto.getDescricao())
                 .valor(dto.getValor())

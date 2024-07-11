@@ -41,5 +41,5 @@ public class Endereco extends GenericDomain {
     private String casa;
 
     @OneToOne(mappedBy = "endereco")
-    private Funcionario funcionario;
+    private Pessoa pessoa;
 }

@@ -15,19 +15,16 @@ import java.time.LocalDate;
 public class FuncionarioRequestDto {
 
     private Long id;
-    private String nome;
-    private String cpf;
-    private String email;
+    private Long matricula;
+    private String emailCorporativo;
     private String cargo;
-
-    private String telefone;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate dataNascimento;
-    private char sexo;
     private Double salario;
     private Long idSupervisor;
-    private Long idEndereco;
+//    private Long idPessoa;
 
-    public FuncionarioRequestDto(String nome, String email, String numero) {
-    }
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate dataAdmissao;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate dataNascimento;
 }

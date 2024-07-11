@@ -15,35 +15,17 @@ import java.time.LocalDate;
 public class FuncionarioResponseDto {
 
     private Long id;
-    private String nome;
-    private String cpf;
-    private String email;
-    private String telefone;
+    private Long matricula;
+    private String emailCorporativo;
     private String cargo;
-
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    private LocalDate dataNascimento;
-    private char sexo;
     private Double salario;
     private Long idSupervisor;
-    private Long idEndereco;
+    private Long idPessoa;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate dataAdmissao;
 
 
-    public FuncionarioResponseDto(Funcionario funcionario) {
-        this.id = funcionario.getId();
-        this.nome = funcionario.getNome();
-        this.cpf = funcionario.getCpf();
-        this.email = funcionario.getEmail();
-        this.telefone = funcionario.getTelefone();
-        this.dataNascimento = funcionario.getDataNascimento();
-        this.sexo = funcionario.getSexo();
-        this.cargo = funcionario.getCargo();
-        this.salario = funcionario.getSalario();
-        this.idSupervisor = (funcionario.getSupervisor() != null) ? funcionario.getSupervisor().getId() : null;
-        this.idEndereco = funcionario.getEndereco().getId();
-    }
+    public FuncionarioResponseDto(Funcionario funcionarioSalvo) {
 
-
-    public FuncionarioResponseDto(long id, String nome, String mail) {
     }
 }

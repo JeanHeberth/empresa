@@ -20,22 +20,14 @@ import java.util.List;
 public class Funcionario extends GenericDomain {
 
     @Column(nullable = false)
-    private String nome;
-
-    @Column(nullable = false)
-    private String cpf;
+    private Long matricula;
 
     @Column(nullable = false, unique = true)
-    private String email;
-
-    private String telefone;
+    private String emailCorporativo;
 
     @Column(nullable = false)
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
     @JsonFormat(pattern = "dd/MM/yyyy")
-    private LocalDate dataNascimento;
-
-    private char sexo;
+    private LocalDate dataAdmissao;
 
     private String cargo;
 
@@ -45,7 +37,8 @@ public class Funcionario extends GenericDomain {
     private Funcionario supervisor;
 
     @OneToOne
-    private Endereco endereco;
+    @JoinColumn(name = "pessoa_id")
+    private Pessoa pessoa;
 
     @OneToMany(mappedBy = "supervisor")
     private List<Funcionario> subordinados;
@@ -62,12 +55,5 @@ public class Funcionario extends GenericDomain {
         }
         return subordinados;
     }
-    public Funcionario(String nome, String email, String telefone, String salario) {
-        this.nome = nome;
-        this.email = email;
-        this.telefone = telefone;
-        this.salario = Double.valueOf(salario);
-    }
-
 
 }
