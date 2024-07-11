@@ -21,12 +21,11 @@ public class Endereco extends GenericDomain {
     private String uf;
     private String rua;
     private String quadra;
+    private String logradouro;
+    private String complemento;
 
     @Column(nullable = false)
     private String cep;
-
-    @Column(nullable = false)
-    private String logradouro;
 
     @Column(nullable = false)
     private String bairro;
@@ -40,9 +39,6 @@ public class Endereco extends GenericDomain {
     @Column(nullable = false)
     @NotNull
     private String casa;
-
-    @NotNull
-    private String complemento;
 
     @OneToOne(mappedBy = "endereco")
     private Funcionario funcionario;

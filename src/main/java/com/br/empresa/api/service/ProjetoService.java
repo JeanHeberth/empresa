@@ -97,5 +97,14 @@ public class ProjetoService {
                     return new EntityNotFoundException("Projeto não encontrado com o id: " + dto.getId());
                 });
     }
+
+    public void deletarProjeto(Long id) {
+        Optional<Projeto> optionalProjeto = this.projetoRepository.findById(id);
+        if (optionalProjeto.isPresent()) {
+            this.projetoRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Projeto não encontrado");
+        }
+    }
 }
 

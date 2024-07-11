@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -60,6 +61,8 @@ public class OrcamentoService {
 
     public OrcamentoResponseDto cadastrarOrcamento(OrcamentoRequestDto dto) {
 
+        LocalDate dataInicial = dto.getDataFinal().isBefore(dto.getDataInicio()) ? dto.getDataFinal() : dto.getDataInicio();
+
         Orcamento orcamento = Orcamento.builder()
                 .descricao(dto.getDescricao())
                 .valor(dto.getValor())
@@ -88,6 +91,12 @@ public class OrcamentoService {
                     logger.error("Orcamento não encontrado com o id: {}", dto.getId());
                     return new EntityNotFoundException("Orçamento não encontrado com o id: " + dto.getId());
                 });
+    }
+
+    public void deletarOrcamento(Long id) {
+        logger.info("Tentando apagar orcamento com ID: {}", id);
+        orcamentoRepository.deleteById(id);
+        logger.info("Orcamento com ID {} apagado com sucesso.", id);
     }
 }
 

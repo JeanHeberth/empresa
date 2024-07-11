@@ -32,9 +32,15 @@ public class OrcamentoController {
         return ResponseEntity.ok(orcamentoService.cadastrarOrcamento(dto));
     }
 
-    @PutMapping
+    @PutMapping("{id}")
     public ResponseEntity<OrcamentoResponseDto> atualizarOrcamento(@RequestBody OrcamentoRequestDto dto) {
         OrcamentoResponseDto orcamentoAtualizado = orcamentoService.atualizarOrcamento(dto);
         return ResponseEntity.ok(orcamentoAtualizado);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deletarOrcamento(@PathVariable Long id) {
+        orcamentoService.deletarOrcamento(id);
+        return ResponseEntity.noContent().build();
     }
 }

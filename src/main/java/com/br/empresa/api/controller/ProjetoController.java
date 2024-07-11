@@ -24,7 +24,7 @@ public class ProjetoController {
         return ResponseEntity.ok(projetoService.buscarProjetos());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ProjetoResponseDto> buscarProjetoPorId(@PathVariable Long id) {
         return ResponseEntity.ok(projetoService.buscarProjetoPorId(id));
     }
@@ -34,9 +34,15 @@ public class ProjetoController {
         return ResponseEntity.ok(projetoService.cadastrarProjeto(dto));
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<ProjetoResponseDto> atualizarProjetos(@RequestBody ProjetoRequestDto dto) {
         ProjetoResponseDto projetoAtualizado = projetoService.atualizarProjeto(dto);
         return ResponseEntity.ok(projetoAtualizado);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarProjeto(@PathVariable Long id) {
+        projetoService.deletarProjeto(id);
+        return ResponseEntity.ok().build();
     }
 }
