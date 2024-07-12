@@ -2,11 +2,14 @@ package com.br.empresa.api.service;
 
 import com.br.empresa.api.dto.FuncionarioRequestDto;
 import com.br.empresa.api.dto.FuncionarioResponseDto;
+import com.br.empresa.api.dto.OrcamentoResponseDto;
 import com.br.empresa.api.entity.Endereco;
 import com.br.empresa.api.entity.Funcionario;
+import com.br.empresa.api.entity.Pessoa;
 import com.br.empresa.api.exception.EntityNotFoundException;
 import com.br.empresa.api.repository.EnderecoRepository;
 import com.br.empresa.api.repository.FuncionarioRepository;
+import com.br.empresa.api.repository.PessoaRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +25,9 @@ public class FuncionarioService {
 
     @Autowired
     private FuncionarioRepository funcionarioRepository;
+
+    @Autowired
+    private PessoaRepository pessoaRepository;
 
     @Autowired
     private EnderecoRepository enderecoRepository;
@@ -55,7 +61,7 @@ public class FuncionarioService {
         // Verificação de email duplicado
         Optional<Funcionario> funcionarioOptionalEmail = funcionarioRepository.findByEmailCorporativo(dto.getEmailCorporativo());
         if (funcionarioOptionalEmail.isPresent()) {
-            throw new EntityNotFoundException("Já existe um usuário com o email ou endereço cadastrado");
+            throw new EntityNotFoundException("Já existe um usuário com o emailcadastrado");
         }
 
         logger.info("Cadastrando funcionário: " + dto);
@@ -77,8 +83,16 @@ public class FuncionarioService {
                 throw new EntityNotFoundException("Supervisor com o id " + dto.getIdSupervisor() + " não encontrado");
             }
         }
-        Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario);
-        return new FuncionarioResponseDto(funcionarioSalvo);
+        //Verificação se a pessoa tem id
+        Optional<Pessoa> pessoa = pessoaRepository.findById(dto.getIdPessoa());
+        if (pessoa.isPresent()) {
+            pessoa.get().setFuncionario(funcionario);
+            funcionario.setPessoa(pessoa.get());
+            Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario);
+            return mapper.map(funcionarioSalvo, FuncionarioResponseDto.class);
+        } else {
+            throw new EntityNotFoundException("Pessoa com o id " + dto.getIdPessoa() + " não encontrada");
+        }
     }
 
     public FuncionarioResponseDto atualizarFuncionario(Long id, FuncionarioRequestDto dto) {
@@ -93,7 +107,7 @@ public class FuncionarioService {
         // Verificação de email duplicado
         Optional<Funcionario> funcionarioOptionalEmail = funcionarioRepository.findByEmailCorporativo(dto.getEmailCorporativo());
         if (funcionarioOptionalEmail.isPresent() && !funcionarioOptionalEmail.get().getId().equals(id)) {
-            throw new EntityNotFoundException("Já existe um usuário com o email cadastrado");
+            throw new EntityNotFoundException("Já existe um usuário com o email corporativo cadastrado");
         }
 
         // Atualização do funcionário
@@ -118,8 +132,17 @@ public class FuncionarioService {
             funcionarioExistente.setSupervisor(null); // Remove o supervisor se não for fornecido
         }
 
-        Funcionario funcionarioSalvo = funcionarioRepository.save(funcionarioExistente);
-        return new FuncionarioResponseDto(funcionarioSalvo);
+        //Verificação se a pessoa tem id
+        Optional<Pessoa> pessoa = pessoaRepository.findById(dto.getIdPessoa());
+        if (pessoa.isPresent()) {
+            pessoa.get().setFuncionario(funcionarioExistente);
+            funcionarioExistente.setPessoa(pessoa.get());
+            Funcionario funcionarioSalvo = funcionarioRepository.save(funcionarioExistente);
+            logger.info("Funcionário salvo com sucesso: {}", funcionarioSalvo);
+            return mapper.map(funcionarioSalvo, FuncionarioResponseDto.class);
+        } else {
+            throw new EntityNotFoundException("Pessoa com o id " + dto.getIdPessoa() + " não encontrada");
+        }
     }
 
     public void apagarFuncionario(Long id) {

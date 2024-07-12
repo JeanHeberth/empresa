@@ -25,7 +25,4 @@ public class FuncionarioResponseDto {
     private LocalDate dataAdmissao;
 
 
-    public FuncionarioResponseDto(Funcionario funcionarioSalvo) {
-
-    }
 }

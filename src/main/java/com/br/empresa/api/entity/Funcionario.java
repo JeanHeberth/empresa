@@ -2,16 +2,14 @@ package com.br.empresa.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString(exclude = {"pessoa", "subordinados"})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,7 +35,7 @@ public class Funcionario extends GenericDomain {
     private Funcionario supervisor;
 
     @OneToOne
-    @JoinColumn(name = "pessoa_id")
+    @JoinColumn(name = "pessoa")
     private Pessoa pessoa;
 
     @OneToMany(mappedBy = "supervisor")
@@ -55,5 +53,6 @@ public class Funcionario extends GenericDomain {
         }
         return subordinados;
     }
+
 
 }
