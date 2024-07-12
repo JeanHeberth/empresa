@@ -143,6 +143,8 @@ public class FuncionarioService {
         } else {
             throw new EntityNotFoundException("Pessoa com o id " + dto.getIdPessoa() + " não encontrada");
         }
+
+
     }
 
     public void apagarFuncionario(Long id) {

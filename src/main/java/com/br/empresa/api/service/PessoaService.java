@@ -89,10 +89,13 @@ public class PessoaService {
                     pessoa.setNome(dto.getNome());
                     pessoa.setCpf(dto.getCpf());
                     pessoa.setEmail(dto.getEmail());
+                    pessoa.setTelefone(dto.getTelefone());
                     pessoa.setDataNascimento(dto.getDataNascimento());
                     pessoa.setSexo(dto.getSexo());
+
                     pessoaRepository.save(pessoa);
-                    return new PessoaResponseDto(pessoa);
+                    logger.info("Pessoa salvo com sucesso: {}", pessoa);
+                    return mapper.map(pessoa, PessoaResponseDto.class);
                 }).orElseThrow();
     }
 }

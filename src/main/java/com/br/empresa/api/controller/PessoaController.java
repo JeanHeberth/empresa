@@ -18,27 +18,27 @@ public class PessoaController {
     PessoaService pessoaService;
 
     @GetMapping()
-    public ResponseEntity<List<PessoaResponseDto>> buscarTodosFuncionarios() {
+    public ResponseEntity<List<PessoaResponseDto>> buscarTodasPessoas() {
         return ResponseEntity.ok(pessoaService.buscarPessoas());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PessoaResponseDto> buscarFuncionarioPorId(@PathVariable Long id) {
+    public ResponseEntity<PessoaResponseDto> buscarPessoaPorId(@PathVariable Long id) {
         return ResponseEntity.ok(pessoaService.buscarPessoaPorId(id));
     }
 
     @DeleteMapping("/{id}")
-    public void apagarFuncionario(@PathVariable Long id) {
+    public void apagarPessoa(@PathVariable Long id) {
         pessoaService.apagarPessoa(id);
     }
 
     @PostMapping()
-    public ResponseEntity<PessoaResponseDto> cadastrarFuncionario(@RequestBody @Valid PessoaRequestDto dto) {
+    public ResponseEntity<PessoaResponseDto> cadastrarPessoa(@RequestBody @Valid PessoaRequestDto dto) {
         return ResponseEntity.ok(pessoaService.cadastrarPessoa(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PessoaResponseDto> atualizarFuncionario(@RequestBody PessoaRequestDto dto) {
+    public ResponseEntity<PessoaResponseDto> atualizarPessoa(@RequestBody PessoaRequestDto dto) {
         PessoaResponseDto pessoaResponseDto = pessoaService.atualizarPessoa(dto.getId(), dto);
         return ResponseEntity.ok(pessoaResponseDto);
     }
