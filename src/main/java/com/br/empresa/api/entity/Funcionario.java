@@ -57,7 +57,7 @@ public class Funcionario extends GenericDomain {
     // Método toString para incluir o nome do supervisor
     @ToString.Include(name = "supervisorNome")
     public String getSupervisorNome() {
-        return supervisor != null ? supervisor.getPessoa().getNome() : "Nenhum";
+        return supervisor != null ? supervisor.getPessoa().getNome() : "Diretor da empresa";
     }
 
 }
