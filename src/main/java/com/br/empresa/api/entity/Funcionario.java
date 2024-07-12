@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@ToString(exclude = {"pessoa", "subordinados"})
+@ToString()
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -54,5 +54,10 @@ public class Funcionario extends GenericDomain {
         return subordinados;
     }
 
+    // Método toString para incluir o nome do supervisor
+    @ToString.Include(name = "supervisorNome")
+    public String getSupervisorNome() {
+        return supervisor != null ? supervisor.getPessoa().getNome() : "Nenhum";
+    }
 
 }

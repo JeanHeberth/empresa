@@ -19,8 +19,9 @@ public class FuncionarioResponseDto {
     private String emailCorporativo;
     private String cargo;
     private Double salario;
-    private Long idSupervisor;
-    private Long idPessoa;
+    private String nomePessoa;
+    private String nomeSupervisor;
+
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataAdmissao;
 
