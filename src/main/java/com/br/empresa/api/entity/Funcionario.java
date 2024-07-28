@@ -36,6 +36,7 @@ public class Funcionario extends GenericDomain {
 
     @OneToOne
     @JoinColumn(name = "pessoa")
+    @ToString.Exclude
     private Pessoa pessoa;
 
     @OneToMany(mappedBy = "supervisor")

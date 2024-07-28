@@ -21,6 +21,8 @@ public class EnderecoRequestDto {
     private String estado;
     private String bairro;
     private String logradouro;
+    private Long idPessoa;
+
 
 
 

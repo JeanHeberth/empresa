@@ -2,10 +2,7 @@ package com.br.empresa.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -28,6 +25,8 @@ public class Pessoa extends GenericDomain {
 
     private String telefone;
 
+    private String rg;
+
     @Column(nullable = false)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
@@ -35,6 +34,7 @@ public class Pessoa extends GenericDomain {
     private char sexo;
 
     @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private Funcionario funcionario;
 
     @OneToOne

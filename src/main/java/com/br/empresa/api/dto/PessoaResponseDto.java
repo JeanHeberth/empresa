@@ -19,6 +19,9 @@ public class PessoaResponseDto {
     private String cpf;
     private String email;
     private String telefone;
+    private String rg;
+    private String endereco;
+    private Long idEndereco;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataNascimento;
     private char sexo;
