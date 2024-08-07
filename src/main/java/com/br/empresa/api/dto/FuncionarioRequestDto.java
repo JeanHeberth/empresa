@@ -23,7 +23,7 @@ public class FuncionarioRequestDto {
     private Long idSupervisor;
     private Long idPessoa;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataAdmissao;
 
 }

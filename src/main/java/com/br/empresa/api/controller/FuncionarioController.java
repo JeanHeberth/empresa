@@ -4,12 +4,16 @@ import com.br.empresa.api.dto.FuncionarioRequestDto;
 import com.br.empresa.api.dto.FuncionarioResponseDto;
 import com.br.empresa.api.dto.PessoaResponseDto;
 import com.br.empresa.api.service.FuncionarioService;
+import com.br.empresa.api.service.MatriculaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/funcionario")
@@ -17,6 +21,9 @@ public class FuncionarioController {
 
     @Autowired
     FuncionarioService funcionarioService;
+
+    @Autowired
+    MatriculaService matriculaService;
 //
 //    @PostMapping("/autenticar")
 //    public ResponseEntity autenticar(@RequestBody FuncionarioRequestDto usuarioDTO) {
@@ -58,5 +65,14 @@ public class FuncionarioController {
     @GetMapping("cpf/{cpf}")
     public ResponseEntity<List<FuncionarioResponseDto>> buscarPessoasPorCpf(@PathVariable String cpf) {
         return ResponseEntity.ok(funcionarioService.buscarPessoasPorCpf(cpf));
+    }
+
+    @GetMapping("/generate/matricula")
+    public Map<String, String> generateMatricula(@RequestParam String cpf, @RequestParam String dataAdmissao) {
+        LocalDate data = LocalDate.parse(dataAdmissao);
+        String matricula = matriculaService.gerarMatricula(data, cpf);
+        Map<String, String> response = new HashMap<>();
+        response.put("matricula", matricula);
+        return response;
     }
 }

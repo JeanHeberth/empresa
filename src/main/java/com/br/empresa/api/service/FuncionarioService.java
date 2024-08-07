@@ -91,7 +91,7 @@ public class FuncionarioService {
             }
         }
         //Verificação se a pessoa tem id
-        Optional<Pessoa> pessoa = pessoaRepository.findById(dto.getIdPessoa());
+        Optional<Pessoa> pessoa = pessoaRepository.findByCpf(dto.getCpf());
         if (pessoa.isPresent()) {
             pessoa.get().setFuncionario(funcionario);
             funcionario.setPessoa(pessoa.get());
@@ -163,7 +163,7 @@ public class FuncionarioService {
     }
 
     public List<FuncionarioResponseDto> buscarPessoasPorCpf(String cpf) {
-        List<Pessoa> pessoas = pessoaRepository.findByCpf(cpf);
+        Optional<Pessoa> pessoas = pessoaRepository.findByCpf(cpf);
         if (pessoas.isEmpty()) {
             throw new EntityNotFoundException("Pessoa com o cpf " + cpf + " não encontrada");
         }
