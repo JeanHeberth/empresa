@@ -1,7 +1,6 @@
 package com.br.empresa.api.dto;
 
 
-import com.br.empresa.api.entity.Funcionario;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +14,7 @@ import java.time.LocalDate;
 public class FuncionarioResponseDto {
 
     private Long id;
-    private Long matricula;
+    private String matricula;
     private String emailCorporativo;
     private String cargo;
     private Double salario;

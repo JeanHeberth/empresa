@@ -2,8 +2,7 @@ package com.br.empresa.api.controller;
 
 import com.br.empresa.api.dto.FuncionarioRequestDto;
 import com.br.empresa.api.dto.FuncionarioResponseDto;
-import com.br.empresa.api.entity.Funcionario;
-import com.br.empresa.api.exception.EntityNotFoundException;
+import com.br.empresa.api.dto.PessoaResponseDto;
 import com.br.empresa.api.service.FuncionarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,7 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarioService.buscarFuncionarios());
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<FuncionarioResponseDto> buscarFuncionarioPorId(@PathVariable Long id) {
         return ResponseEntity.ok(funcionarioService.buscarFuncionarioPorId(id));
@@ -55,5 +55,8 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarioAtualizado);
     }
 
-
+    @GetMapping("cpf/{cpf}")
+    public ResponseEntity<List<FuncionarioResponseDto>> buscarPessoasPorCpf(@PathVariable String cpf) {
+        return ResponseEntity.ok(funcionarioService.buscarPessoasPorCpf(cpf));
+    }
 }
