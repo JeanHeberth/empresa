@@ -15,7 +15,8 @@ import java.time.LocalDate;
 public class FuncionarioRequestDto {
 
     private Long id;
-    private Long matricula;
+    private String matricula;
+    private String cpf;
     private String emailCorporativo;
     private String cargo;
     private Double salario;

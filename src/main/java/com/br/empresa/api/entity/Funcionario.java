@@ -18,7 +18,7 @@ import java.util.List;
 public class Funcionario extends GenericDomain {
 
     @Column(nullable = false)
-    private Long matricula;
+    private String matricula;
 
     @Column(nullable = false, unique = true)
     private String emailCorporativo;
@@ -36,6 +36,7 @@ public class Funcionario extends GenericDomain {
 
     @OneToOne
     @JoinColumn(name = "pessoa")
+    @ToString.Exclude
     private Pessoa pessoa;
 
     @OneToMany(mappedBy = "supervisor")
@@ -55,9 +56,9 @@ public class Funcionario extends GenericDomain {
     }
 
     // Método toString para incluir o nome do supervisor
-    @ToString.Include(name = "supervisorNome")
-    public String getSupervisorNome() {
-        return supervisor != null ? supervisor.getPessoa().getNome() : "Diretor da empresa";
-    }
+//    @ToString.Include(name = "supervisorNome")
+//    public String getSupervisorNome() {
+//        return supervisor != null ? supervisor.getPessoa().getNome() : "Diretor da empresa";
+//    }
 
 }

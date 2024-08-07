@@ -3,9 +3,11 @@ package com.br.empresa.api.service;
 import com.br.empresa.api.dto.OrcamentoResponseDto;
 import com.br.empresa.api.dto.PessoaRequestDto;
 import com.br.empresa.api.dto.PessoaResponseDto;
+import com.br.empresa.api.entity.Endereco;
 import com.br.empresa.api.entity.Orcamento;
 import com.br.empresa.api.entity.Pessoa;
 import com.br.empresa.api.exception.EntityNotFoundException;
+import com.br.empresa.api.repository.EnderecoRepository;
 import com.br.empresa.api.repository.PessoaRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -24,27 +26,24 @@ public class PessoaService {
 
     @Autowired
     PessoaRepository pessoaRepository;
+
+    @Autowired
+    EnderecoRepository enderecoRepository;
+
+
     private final ModelMapper mapper = new ModelMapper();
 
     private static final Logger logger = LoggerFactory.getLogger(OrcamentoService.class);
 
     public List<PessoaResponseDto> buscarPessoas() {
-        try {
-            List<Pessoa> pessoas = pessoaRepository.findAll();
-            if (pessoas.isEmpty()) {
-                logger.info("Nenhuma pessoa encontrada");
-                return Collections.emptyList();
-            }
 
-            logger.info("Pessoas encontradas");
-            return pessoas.stream()
-                    .map(pessoa -> mapper.map(pessoa, PessoaResponseDto.class))
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            logger.error("Erro ao buscar pessoas ", e);
-            throw new RuntimeException("Erro ao buscar pessoas", e);
-        }
+        List<Pessoa> pessoas = pessoaRepository.findAll();
+        logger.info("Pessoas encontradas");
+        return pessoas.stream()
+                .map(pessoa -> mapper.map(pessoa, PessoaResponseDto.class))
+                .collect(Collectors.toList());
     }
+
 
     public PessoaResponseDto buscarPessoaPorId(Long id) {
         logger.info("Buscando orçamento com ID: {}", id);
@@ -72,11 +71,18 @@ public class PessoaService {
         Pessoa pessoa = Pessoa.builder()
                 .nome(dto.getNome())
                 .cpf(dto.getCpf())
+                .rg(dto.getRg())
                 .email(dto.getEmail())
                 .telefone(dto.getTelefone())
                 .dataNascimento(dto.getDataNascimento())
                 .sexo(dto.getSexo())
                 .build();
+
+        Optional<Endereco> optionalEndereco = enderecoRepository.findById(dto.getIdEndereco());
+        if (optionalEndereco.isPresent()) {
+            Endereco endereco = optionalEndereco.get();
+            pessoa.setEndereco(endereco);
+        }
         Pessoa pessoaSalva = pessoaRepository.save(pessoa);
         logger.info("Pessoa salvo com sucesso: {}", pessoaSalva);
         return mapper.map(pessoaSalva, PessoaResponseDto.class);

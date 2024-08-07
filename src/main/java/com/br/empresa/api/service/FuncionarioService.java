@@ -3,6 +3,7 @@ package com.br.empresa.api.service;
 import com.br.empresa.api.dto.FuncionarioRequestDto;
 import com.br.empresa.api.dto.FuncionarioResponseDto;
 import com.br.empresa.api.dto.OrcamentoResponseDto;
+import com.br.empresa.api.dto.PessoaResponseDto;
 import com.br.empresa.api.entity.Endereco;
 import com.br.empresa.api.entity.Funcionario;
 import com.br.empresa.api.entity.Pessoa;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +27,9 @@ public class FuncionarioService {
 
     @Autowired
     private FuncionarioRepository funcionarioRepository;
+
+    @Autowired
+    private MatriculaService matriculaService;
 
     @Autowired
     private PessoaRepository pessoaRepository;
@@ -35,6 +40,8 @@ public class FuncionarioService {
     private static final Logger logger = LoggerFactory.getLogger(OrcamentoService.class);
 
     private ModelMapper mapper = new ModelMapper();
+    @Autowired
+    private PessoaService pessoaService;
 
 
     public List<FuncionarioResponseDto> buscarFuncionarios() {
@@ -66,7 +73,7 @@ public class FuncionarioService {
 
         logger.info("Cadastrando funcionário: " + dto);
         Funcionario funcionario = Funcionario.builder()
-                .matricula(dto.getMatricula())
+                .matricula(matriculaService.gerarMatricula(dto.getDataAdmissao(), dto.getCpf()))
                 .cargo(dto.getCargo())
                 .emailCorporativo(dto.getEmailCorporativo())
                 .dataAdmissao(dto.getDataAdmissao())
@@ -112,7 +119,6 @@ public class FuncionarioService {
 
         // Atualização do funcionário
         funcionarioExistente.setId(dto.getId());
-        funcionarioExistente.setMatricula(dto.getMatricula());
         funcionarioExistente.setEmailCorporativo(dto.getEmailCorporativo());
         funcionarioExistente.setCargo(dto.getCargo());
         funcionarioExistente.setDataAdmissao(dto.getDataAdmissao());
@@ -156,7 +162,20 @@ public class FuncionarioService {
         }
     }
 
+    public List<FuncionarioResponseDto> buscarPessoasPorCpf(String cpf) {
+        List<Pessoa> pessoas = pessoaRepository.findByCpf(cpf);
+        if (pessoas.isEmpty()) {
+            throw new EntityNotFoundException("Pessoa com o cpf " + cpf + " não encontrada");
+        }
+        logger.info("Pessoas encontradas");
+        return pessoas.stream()
+                .map(pessoa -> mapper.map(pessoa, FuncionarioResponseDto.class))
+                .collect(Collectors.toList());
+    }
 
+//    private String getMatricula(){
+//        return  UUID.randomUUID().toString().substring(0, 5).toUpperCase();
+//    }
 }
 
 
