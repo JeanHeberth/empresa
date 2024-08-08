@@ -12,12 +12,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Pessoa extends GenericDomain {
+public class Pessoa {
 
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false)
+    @Id
+    @Column(nullable = false, unique = true)
     private String cpf;
 
     @Column(nullable = false, unique = true)
@@ -33,11 +34,7 @@ public class Pessoa extends GenericDomain {
 
     private char sexo;
 
-    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private Funcionario funcionario;
-
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 

@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@ToString()
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,21 +31,25 @@ public class Funcionario extends GenericDomain {
     private Double salario;
 
     @ManyToOne
+    @JoinColumn(name = "supervisor")
     private Funcionario supervisor;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "pessoa")
-    @ToString.Exclude
     private Pessoa pessoa;
 
-    @OneToMany(mappedBy = "supervisor")
-    private List<Funcionario> subordinados;
-
+    @ManyToOne
+    @JoinColumn(name = "departamento_id")
+    private Departamento departamento;
 
     public void adicionarSubordinados(Funcionario funcionario) {
         getSubordinados().add(funcionario);
         funcionario.setSupervisor(this);
     }
+
+    @OneToMany(mappedBy = "supervisor")
+    private List<Funcionario> subordinados;
+
 
     public List<Funcionario> getSubordinados() {
         if (subordinados == null) {
@@ -54,11 +57,5 @@ public class Funcionario extends GenericDomain {
         }
         return subordinados;
     }
-
-    // Método toString para incluir o nome do supervisor
-//    @ToString.Include(name = "supervisorNome")
-//    public String getSupervisorNome() {
-//        return supervisor != null ? supervisor.getPessoa().getNome() : "Diretor da empresa";
-//    }
 
 }

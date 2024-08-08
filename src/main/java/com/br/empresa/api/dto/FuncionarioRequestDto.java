@@ -23,6 +23,7 @@ public class FuncionarioRequestDto {
     private Long idSupervisor;
     private Long idPessoa;
 
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataAdmissao;
 

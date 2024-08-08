@@ -37,7 +37,5 @@ public class Endereco extends GenericDomain {
     @NotNull
     private String casa;
 
-    @OneToOne(mappedBy = "endereco")
-    @ToString.Exclude
-    private Pessoa pessoa;
+
 }

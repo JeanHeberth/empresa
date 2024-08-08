@@ -20,7 +20,6 @@ public class OrcamentoResponseDto {
     private LocalDate dataInicio;
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataFinal;
-    private Long idDepartamento;
-    private String nomeDepartamento;
+
 
 }

@@ -2,12 +2,14 @@ package com.br.empresa.api.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -22,12 +24,8 @@ public class Departamento extends GenericDomain {
     @Column(nullable = false)
     private String numero;
 
-
-    public Departamento(Long id, String numero, LocalDate dataCadastro) {
-        this.setNome(numero);
-        this.setId(id);
-        this.setNumero(numero);
-    }
+    @OneToMany(mappedBy = "departamento")
+    private List<Funcionario> funcionarios;
 
 
 }

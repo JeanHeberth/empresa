@@ -14,12 +14,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class PessoaResponseDto {
 
-    private Long id;
     private String nome;
     private String cpf;
     private String email;
     private String telefone;
-    private String rg;
+    //    private String rg;
     private String endereco;
     private Long idEndereco;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")

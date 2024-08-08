@@ -83,22 +83,17 @@ public class FuncionarioService {
         // Verificação e associação do supervisor, se existir
         if (dto.getIdSupervisor() != null) {
             Optional<Funcionario> optionalSupervisor = funcionarioRepository.findById(dto.getIdSupervisor());
-            if (optionalSupervisor.isPresent()) {
-                Funcionario supervisor = optionalSupervisor.get();
-                supervisor.adicionarSubordinados(funcionario);
-            } else {
-                throw new EntityNotFoundException("Supervisor com o id " + dto.getIdSupervisor() + " não encontrado");
-            }
+            optionalSupervisor.get().adicionarSubordinados(funcionario);
+            funcionario.setSupervisor(optionalSupervisor.get());
         }
         //Verificação se a pessoa tem id
         Optional<Pessoa> pessoa = pessoaRepository.findByCpf(dto.getCpf());
         if (pessoa.isPresent()) {
-            pessoa.get().setFuncionario(funcionario);
             funcionario.setPessoa(pessoa.get());
             Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario);
             return mapper.map(funcionarioSalvo, FuncionarioResponseDto.class);
         } else {
-            throw new EntityNotFoundException("Pessoa com o id " + dto.getIdPessoa() + " não encontrada");
+            throw new EntityNotFoundException("Pessoa com o id " + dto.getCpf() + " não encontrada");
         }
     }
 
@@ -125,23 +120,15 @@ public class FuncionarioService {
         funcionarioExistente.setSalario(dto.getSalario());
 
         // Verificação e associação do supervisor, se existir
-        if (dto.getIdSupervisor() != null) {
-            Optional<Funcionario> optionalSupervisor = funcionarioRepository.findById(dto.getIdSupervisor());
-            if (optionalSupervisor.isPresent()) {
-                Funcionario supervisor = optionalSupervisor.get();
-                supervisor.adicionarSubordinados(funcionarioExistente);
-                funcionarioExistente.setSupervisor(supervisor); // Adiciona supervisor ao funcionário
-            } else {
-                throw new EntityNotFoundException("Supervisor com o id " + dto.getIdSupervisor() + " não encontrado");
-            }
-        } else {
-            funcionarioExistente.setSupervisor(null); // Remove o supervisor se não for fornecido
-        }
+//        if (dto.getIdSupervisor() != null) {
+//            funcionarioExistente(false);
+//        } else {
+//            throw new EntityNotFoundException("Supervisor com o id " + dto.getIdSupervisor() + " não encontrado");
+//        }
 
         //Verificação se a pessoa tem id
         Optional<Pessoa> pessoa = pessoaRepository.findById(dto.getIdPessoa());
         if (pessoa.isPresent()) {
-            pessoa.get().setFuncionario(funcionarioExistente);
             funcionarioExistente.setPessoa(pessoa.get());
             Funcionario funcionarioSalvo = funcionarioRepository.save(funcionarioExistente);
             logger.info("Funcionário salvo com sucesso: {}", funcionarioSalvo);
@@ -173,9 +160,6 @@ public class FuncionarioService {
                 .collect(Collectors.toList());
     }
 
-//    private String getMatricula(){
-//        return  UUID.randomUUID().toString().substring(0, 5).toUpperCase();
-//    }
 }
 
 

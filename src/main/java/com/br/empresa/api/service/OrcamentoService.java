@@ -68,8 +68,6 @@ public class OrcamentoService {
                 .dataInicio(dto.getDataInicio())
                 .dataFinal(dto.getDataFinal())
                 .build();
-        Optional<Departamento> departamento = departamentoRepository.findById(dto.getIdDepartamento());
-        orcamento.setDepartamento(departamento.get());
         Orcamento orcamentoSalvo = orcamentoRepository.save(orcamento);
 
         logger.info("Orcamento salvo com sucesso: {}", orcamentoSalvo);
