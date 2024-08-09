@@ -3,7 +3,6 @@ package com.br.empresa.api.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,31 +24,20 @@ public class Funcionario extends GenericDomain {
     @Column(nullable = false)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataAdmissao;
-
     private String cargo;
-
     private Double salario;
 
     @ManyToOne
-    @JoinColumn(name = "supervisor")
     private Funcionario supervisor;
 
-    @ManyToOne
-    @JoinColumn(name = "pessoa")
-    private Pessoa pessoa;
+    @OneToMany(mappedBy = "supervisor")
+    private List<Funcionario> subordinados;
 
-    @ManyToOne
-    @JoinColumn(name = "departamento_id")
-    private Departamento departamento;
 
     public void adicionarSubordinados(Funcionario funcionario) {
         getSubordinados().add(funcionario);
         funcionario.setSupervisor(this);
     }
-
-    @OneToMany(mappedBy = "supervisor")
-    private List<Funcionario> subordinados;
-
 
     public List<Funcionario> getSubordinados() {
         if (subordinados == null) {
@@ -57,5 +45,14 @@ public class Funcionario extends GenericDomain {
         }
         return subordinados;
     }
+
+
+    @ManyToOne
+    @JoinColumn(name = "pessoa_id")
+    private Pessoa pessoa;
+
+    @ManyToOne
+    @JoinColumn(name = "departamento_id")
+    private Departamento departamento;
 
 }

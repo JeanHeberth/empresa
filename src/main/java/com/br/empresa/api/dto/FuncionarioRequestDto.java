@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class FuncionarioRequestDto {
 
+
     private Long id;
     private String matricula;
     private String cpf;
@@ -22,6 +23,7 @@ public class FuncionarioRequestDto {
     private Double salario;
     private Long idSupervisor;
     private Long idPessoa;
+    private Long idDepartamento;
 
 
     @JsonFormat(pattern = "yyyy-MM-dd")
