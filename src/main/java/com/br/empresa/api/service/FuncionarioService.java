@@ -106,9 +106,9 @@ public class FuncionarioService {
         funcionario.setDepartamento(departamento);
 
         // Verificação e associação do supervisor, se existir
-        if (dto.getIdSupervisor() != null) {
-            Funcionario supervisor = funcionarioRepository.findById(dto.getIdSupervisor())
-                    .orElseThrow(() -> new EntityNotFoundException("Funcionário com o id " + dto.getIdSupervisor() + " não encontrado"));
+        if (dto.getMatriculaSupervisor() != null) {
+            Funcionario supervisor = funcionarioRepository.findByMatricula(dto.getMatriculaSupervisor())
+                    .orElseThrow(() -> new EntityNotFoundException("Funcionário com o id " + dto.getMatriculaSupervisor() + " não encontrado"));
             funcionario.setSupervisor(supervisor);
             supervisor.adicionarSubordinados(funcionario);
         }
