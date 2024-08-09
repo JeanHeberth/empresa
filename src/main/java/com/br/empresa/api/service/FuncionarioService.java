@@ -4,10 +4,12 @@ import com.br.empresa.api.dto.FuncionarioRequestDto;
 import com.br.empresa.api.dto.FuncionarioResponseDto;
 import com.br.empresa.api.dto.OrcamentoResponseDto;
 import com.br.empresa.api.dto.PessoaResponseDto;
+import com.br.empresa.api.entity.Departamento;
 import com.br.empresa.api.entity.Endereco;
 import com.br.empresa.api.entity.Funcionario;
 import com.br.empresa.api.entity.Pessoa;
 import com.br.empresa.api.exception.EntityNotFoundException;
+import com.br.empresa.api.repository.DepartamentoRepository;
 import com.br.empresa.api.repository.EnderecoRepository;
 import com.br.empresa.api.repository.FuncionarioRepository;
 import com.br.empresa.api.repository.PessoaRepository;
@@ -42,25 +44,38 @@ public class FuncionarioService {
     private ModelMapper mapper = new ModelMapper();
     @Autowired
     private PessoaService pessoaService;
+    @Autowired
+    private DepartamentoRepository departamentoRepository;
 
 
     public List<FuncionarioResponseDto> buscarFuncionarios() {
+        logger.info("Buscando todos os funcionários: ");
         List<Funcionario> funcionarios = funcionarioRepository.findAll();
-        return funcionarios.stream()
-                .map(funcionario -> mapper.map(funcionario, FuncionarioResponseDto.class))
+        List<FuncionarioResponseDto> responseDtos = funcionarios.stream()
+                .map(funcionario -> {
+                    FuncionarioResponseDto dto = mapper.map(funcionario, FuncionarioResponseDto.class);
+                    if (funcionario.getSupervisor() != null) {
+                        dto.setNomeSupervisor(funcionario.getSupervisor().getPessoa().getNome());
+                    }
+                    return dto;
+                })
                 .collect(Collectors.toList());
+
+        return responseDtos;
 
     }
 
     public FuncionarioResponseDto buscarFuncionarioPorId(Long id) {
 
         logger.info("Buscando funcionário por id: " + id);
-        Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
-        if (!funcionario.isPresent()) {
-            throw new EntityNotFoundException("Funcionário com o id " + id + " não encontrado");
-        }
-        return mapper.map(funcionario.get(), FuncionarioResponseDto.class);
+        Funcionario funcionario = funcionarioRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Funcionário com o id " + id + " não encontrado"));
+        FuncionarioResponseDto responseDto = mapper.map(funcionario, FuncionarioResponseDto.class);
 
+        if (funcionario.getSupervisor() != null) {
+            responseDto.setNomeSupervisor(funcionario.getSupervisor().getPessoa().getNome());
+        }
+        return responseDto;
     }
 
     public FuncionarioResponseDto cadastrarFuncionario(FuncionarioRequestDto dto) {
@@ -68,7 +83,7 @@ public class FuncionarioService {
         // Verificação de email duplicado
         Optional<Funcionario> funcionarioOptionalEmail = funcionarioRepository.findByEmailCorporativo(dto.getEmailCorporativo());
         if (funcionarioOptionalEmail.isPresent()) {
-            throw new EntityNotFoundException("Já existe um usuário com o emailcadastrado");
+            throw new EntityNotFoundException("Já existe um usuário com o email cadastrado");
         }
 
         logger.info("Cadastrando funcionário: " + dto);
@@ -80,21 +95,36 @@ public class FuncionarioService {
                 .salario(dto.getSalario())
                 .build();
 
+        // Verificação se a pessoa tem id
+        Pessoa pessoa = pessoaRepository.findByCpf(dto.getCpf())
+                .orElseThrow(() -> new EntityNotFoundException("Pessoa com o cpf " + dto.getCpf() + " não encontrada"));
+        funcionario.setPessoa(pessoa);
+
+        // Departamento
+        Departamento departamento = departamentoRepository.findById(dto.getIdDepartamento())
+                .orElseThrow(() -> new EntityNotFoundException("Departamento com o id " + dto.getIdDepartamento() + " não encontrado"));
+        funcionario.setDepartamento(departamento);
+
         // Verificação e associação do supervisor, se existir
         if (dto.getIdSupervisor() != null) {
-            Optional<Funcionario> optionalSupervisor = funcionarioRepository.findById(dto.getIdSupervisor());
-            optionalSupervisor.get().adicionarSubordinados(funcionario);
-            funcionario.setSupervisor(optionalSupervisor.get());
+            Funcionario supervisor = funcionarioRepository.findById(dto.getIdSupervisor())
+                    .orElseThrow(() -> new EntityNotFoundException("Funcionário com o id " + dto.getIdSupervisor() + " não encontrado"));
+            funcionario.setSupervisor(supervisor);
+            supervisor.adicionarSubordinados(funcionario);
         }
-        //Verificação se a pessoa tem id
-        Optional<Pessoa> pessoa = pessoaRepository.findByCpf(dto.getCpf());
-        if (pessoa.isPresent()) {
-            funcionario.setPessoa(pessoa.get());
-            Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario);
-            return mapper.map(funcionarioSalvo, FuncionarioResponseDto.class);
-        } else {
-            throw new EntityNotFoundException("Pessoa com o id " + dto.getCpf() + " não encontrada");
+
+        // Cadastramento do funcionário
+        Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario);
+
+        // Mapeamento para DTO de resposta
+        FuncionarioResponseDto responseDto = mapper.map(funcionarioSalvo, FuncionarioResponseDto.class);
+
+        // Preencha manualmente o nome do supervisor, se houver
+        if (funcionarioSalvo.getSupervisor() != null) {
+            responseDto.setNomeSupervisor(funcionarioSalvo.getSupervisor().getPessoa().getNome());
         }
+
+        return responseDto;
     }
 
     public FuncionarioResponseDto atualizarFuncionario(Long id, FuncionarioRequestDto dto) {
