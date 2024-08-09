@@ -21,6 +21,7 @@ public class FuncionarioRequestDto {
     private String emailCorporativo;
     private String cargo;
     private Double salario;
+    private String matriculaSupervisor;
     private Long idSupervisor;
     private Long idPessoa;
     private Long idDepartamento;

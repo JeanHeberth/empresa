@@ -21,7 +21,6 @@ public class FuncionarioResponseDto {
     private String nomePessoa;
     private String nomeSupervisor;
     private String nomeDepartamento;
-    private Long supervisorId;
 
 
     @JsonFormat(pattern = "dd/MM/yyyy")
