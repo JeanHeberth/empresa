@@ -12,6 +12,5 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
 
     Optional<Funcionario> findByMatricula(String matriculaSupervisor);
 
-//    Optional<Funcionario> findByMatricula(String matricula);
 
 }
