@@ -46,6 +46,12 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarioService.buscarFuncionarioPorId(id));
     }
 
+
+    @GetMapping("/matricula/{matricula}")
+    public ResponseEntity<FuncionarioResponseDto> buscarFuncionarioPorMatricula(@PathVariable String matricula) {
+        return ResponseEntity.ok(funcionarioService.buscarFuncionarioPorMatricula(matricula));
+    }
+
     @DeleteMapping("/{id}")
     public void apagarFuncionario(@PathVariable Long id) {
         funcionarioService.apagarFuncionario(id);

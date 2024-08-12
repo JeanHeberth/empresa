@@ -78,6 +78,19 @@ public class FuncionarioService {
         return responseDto;
     }
 
+    public FuncionarioResponseDto buscarFuncionarioPorMatricula(String matricula) {
+
+        logger.info("Buscando funcionário por matricula: " + matricula);
+        Funcionario funcionario = funcionarioRepository.findByMatricula(matricula)
+                .orElseThrow(() -> new EntityNotFoundException("Funcionário com a matricula " + matricula + " não encontrado"));
+        FuncionarioResponseDto responseDto = mapper.map(funcionario, FuncionarioResponseDto.class);
+
+        if (funcionario.getSupervisor() != null) {
+            responseDto.setNomeSupervisor(funcionario.getSupervisor().getPessoa().getNome());
+        }
+        return responseDto;
+    }
+
     public FuncionarioResponseDto cadastrarFuncionario(FuncionarioRequestDto dto) {
 
         // Verificação de email duplicado
