@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: empresa
+
+  data:
+    mongodb:
+      uri: http://localhost:27017
+      database: testeJean
+
+server:
+  port: 8088
+
+jackson:
+  date-format:yyyy-MM-dd
+  time-zone:UTC
