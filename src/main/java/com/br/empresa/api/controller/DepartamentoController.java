@@ -39,7 +39,7 @@ public class DepartamentoController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<DepartamentoResponseDto> cadastrarDepartamento(@RequestBody @Valid DepartamentoRequestDto dto) {
-        return ResponseEntity.ok(departamentoService.cadastrarDepartamento(dto));
+        return ResponseEntity.created(null).body(departamentoService.cadastrarDepartamento(dto));
     }
 
     @PutMapping("/{id}")
