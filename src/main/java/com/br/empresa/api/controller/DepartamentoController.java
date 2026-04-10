@@ -1,29 +1,29 @@
 package com.br.empresa.api.controller;
 
-
 import com.br.empresa.api.dto.DepartamentoRequestDto;
 import com.br.empresa.api.dto.DepartamentoResponseDto;
 import com.br.empresa.api.service.DepartamentoService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/departamento")
 @CrossOrigin("http://localhost:4200")
 public class DepartamentoController {
 
+    private final DepartamentoService departamentoService;
 
-    @Autowired
-    DepartamentoService departamentoService;
+    public DepartamentoController(DepartamentoService departamentoService) {
+        this.departamentoService = departamentoService;
+    }
 
     @GetMapping
-    public ResponseEntity<List<DepartamentoResponseDto>> buscarTodosDepartamentos() {
-        return ResponseEntity.ok(departamentoService.buscarDepartamentos());
+    public ResponseEntity<Page<DepartamentoResponseDto>> buscarTodosDepartamentos(Pageable pageable) {
+        return ResponseEntity.ok(departamentoService.buscarDepartamentos(pageable));
     }
 
     @GetMapping("/{id}")
@@ -31,22 +31,22 @@ public class DepartamentoController {
         return ResponseEntity.ok(departamentoService.buscarDepartamentoPorId(id));
     }
 
-    @DeleteMapping("/{id}")
-    public void apagarDepartamento(@PathVariable Long id) {
-        departamentoService.apagarDepartamento(id);
-    }
-
-    @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<DepartamentoResponseDto> cadastrarDepartamento(@RequestBody @Valid DepartamentoRequestDto dto) {
-        return ResponseEntity.created(null).body(departamentoService.cadastrarDepartamento(dto));
+    @PostMapping
+    public ResponseEntity<DepartamentoResponseDto> cadastrarDepartamento(@Valid @RequestBody DepartamentoRequestDto dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(departamentoService.cadastrarDepartamento(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DepartamentoResponseDto> atualizarDepartamento(@Valid @RequestBody DepartamentoRequestDto dto) {
-        DepartamentoResponseDto funcionarioAtualizado = departamentoService.atualizarDepartamento(dto);
-        return ResponseEntity.ok(funcionarioAtualizado);
+    public ResponseEntity<DepartamentoResponseDto> atualizarDepartamento(
+            @PathVariable Long id,
+            @Valid @RequestBody DepartamentoRequestDto dto) {
+
+        return ResponseEntity.ok(departamentoService.atualizarDepartamento(id, dto));
     }
 
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> apagarDepartamento(@PathVariable Long id) {
+        departamentoService.apagarDepartamento(id);
+        return ResponseEntity.noContent().build();
+    }
 }

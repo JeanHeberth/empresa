@@ -1,27 +1,24 @@
 package com.br.empresa.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDate;
 
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class DepartamentoRequestDto {
 
-    private Long id;
-
+    @NotBlank(message = "O nome do departamento é obrigatório.")
     private String nome;
 
+    @NotNull(message = "O número do departamento é obrigatório.")
     private Long numero;
 
 
-    public DepartamentoRequestDto(String nome, String numero) {
-    }
-
-    public DepartamentoRequestDto(Long id, String nome, String numero) {
-    }
 }

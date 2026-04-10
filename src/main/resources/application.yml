@@ -2,14 +2,21 @@ spring:
   application:
     name: empresa
 
-  data:
-    mongodb:
-      uri: http://localhost:27017
-      database: testeJean
+  datasource:
+    url: jdbc:mysql://localhost:3306/empresa?createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL8Dialect
 
 server:
-  port: 8088
+  port: 8089
 
 jackson:
-  date-format:yyyy-MM-dd
-  time-zone:UTC
+  date-format: yyyy-MM-dd
+  time-zone: UTC
